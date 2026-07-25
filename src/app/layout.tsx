@@ -15,7 +15,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Zekora",
   description: "A calm, cozy personal storage system",
-  icons: { icon: "/favicon.svg" },
+  icons: { icon: "/zekora.png" },
+  openGraph: {
+    images: "/zekora.png",
+  },
 }
 
 export default function RootLayout({

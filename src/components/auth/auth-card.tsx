@@ -26,12 +26,12 @@ export function AuthCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="w-full max-w-sm"
+      className="w-full max-w-sm px-4"
     >
-      <div className="rounded-2xl border border-border bg-surface p-8 shadow-2xl">
-        <div className="flex flex-col items-center text-center mb-8">
-          <VaultIcon className="mb-4" />
-          <h1 className="text-xl font-medium text-text">{title}</h1>
+      <div className="rounded-2xl border border-border bg-surface p-6 sm:p-8 shadow-2xl">
+        <div className="flex flex-col items-center text-center mb-6 sm:mb-8">
+          <VaultIcon className="w-16 h-16 sm:w-20 sm:h-20 mb-4" />
+          <h1 className="text-lg sm:text-xl font-medium text-text">{title}</h1>
           <p className="text-sm text-text-muted mt-1.5">{subtitle}</p>
         </div>
         {children}

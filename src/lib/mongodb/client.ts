@@ -1,7 +1,4 @@
 import { MongoClient } from "mongodb"
-import dns from "dns"
-
-dns.setServers(["8.8.8.8", "8.8.4.4"])
 
 const uri = process.env.MONGODB_URI ?? ""
 let clientPromise: Promise<MongoClient> | null = null
