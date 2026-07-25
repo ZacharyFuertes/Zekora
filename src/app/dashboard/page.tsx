@@ -9,16 +9,17 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/login")
 
-  const { data: files } = await supabase
-    .from("files")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-
-  const [collections, tags] = await Promise.all([
+  const [filesResult, collections, tags] = await Promise.all([
+    supabase
+      .from("files")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false }),
     getCollections(user.id),
     getTags(user.id),
   ])
+
+  const files = filesResult.data
 
   return (
     <DashboardContent

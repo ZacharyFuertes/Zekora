@@ -2,18 +2,37 @@ import { MongoClient } from "mongodb"
 
 const uri = process.env.MONGODB_URI ?? ""
 const options = {
-  serverSelectionTimeoutMS: 10000,
-  connectTimeoutMS: 10000,
+  maxPoolSize: 10,
+  minPoolSize: 0,
+  serverSelectionTimeoutMS: 5000,
+  connectTimeoutMS: 5000,
+  socketTimeoutMS: 30000,
+  keepAlive: true,
+  keepAliveInitialDelay: 300000,
 }
 
-let clientPromise: Promise<MongoClient> | null = null
+const globalWithMongo = global as typeof globalThis & {
+  _mongoClientPromise?: Promise<MongoClient>
+  _indexesEnsured?: boolean
+}
 
 function getClientPromise(): Promise<MongoClient> {
-  if (!clientPromise) {
+  if (!globalWithMongo._mongoClientPromise) {
     const client = new MongoClient(uri, options)
-    clientPromise = client.connect()
+    globalWithMongo._mongoClientPromise = client.connect()
   }
-  return clientPromise
+  return globalWithMongo._mongoClientPromise
+}
+
+async function ensureIndexes(db: import("mongodb").Db) {
+  if (globalWithMongo._indexesEnsured) return
+  await Promise.all([
+    db.collection("notes").createIndex({ user_id: 1, updated_at: -1 }),
+    db.collection("notes").createIndex({ user_id: 1, file_id: 1 }),
+    db.collection("collections").createIndex({ user_id: 1, created_at: -1 }),
+    db.collection("tags").createIndex({ user_id: 1, name: 1 }, { unique: true }),
+  ]).catch(() => {})
+  globalWithMongo._indexesEnsured = true
 }
 
 export async function getDb() {
@@ -25,9 +44,11 @@ export async function getDb() {
   }
   try {
     const client = await getClientPromise()
-    return client.db("zekora")
+    const db = client.db("zekora")
+    ensureIndexes(db)
+    return db
   } catch (error) {
-    clientPromise = null
+    globalWithMongo._mongoClientPromise = undefined
     throw error
   }
 }
