@@ -12,13 +12,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 })
 
-export const metadata: Metadata = {
-  title: "Zekora",
-  description: "A calm, cozy personal storage system",
-  icons: { icon: "/zekora.png" },
-  openGraph: {
-    images: "/zekora.png",
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "http://localhost:3000"
+
+  return {
+    title: "Zekora",
+    description: "A calm, cozy personal storage system",
+    metadataBase: new URL(baseUrl),
+    icons: { icon: "/zekora.png" },
+    openGraph: {
+      images: "/zekora.png",
+    },
+  }
 }
 
 export default function RootLayout({
