@@ -8,6 +8,8 @@ interface AuthCardProps {
   title: string
   subtitle: string
   children: React.ReactNode
+  headerImage?: string
+  headerImageAlt?: string
   footerText?: string
   footerLink?: string
   footerLinkText?: string
@@ -17,6 +19,8 @@ export function AuthCard({
   title,
   subtitle,
   children,
+  headerImage,
+  headerImageAlt = "",
   footerText,
   footerLink,
   footerLinkText,
@@ -30,7 +34,15 @@ export function AuthCard({
     >
       <div className="rounded-none border-2 border-neon bg-surface p-6 sm:p-8 pixel-shadow-neon">
         <div className="flex flex-col items-center text-center mb-6 sm:mb-8">
-          <VaultIcon className="w-16 h-16 sm:w-20 sm:h-20 mb-4" />
+          {headerImage ? (
+            <img
+              src={headerImage}
+              alt={headerImageAlt}
+              className="mb-4 h-20 w-20 object-contain sm:h-24 sm:w-24"
+            />
+          ) : (
+            <VaultIcon className="mb-4 h-16 w-16 sm:h-20 sm:w-20" />
+          )}
           <h1 className="font-pixel text-base sm:text-lg font-bold text-text uppercase tracking-wider">
             {title}
           </h1>
