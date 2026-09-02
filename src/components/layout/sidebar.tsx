@@ -5,12 +5,13 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import {
-  Folder,
-  File,
-  Tags,
-  Clock,
   LayoutGrid,
-  ChevronLeft,
+  Folder,
+  Lock,
+  FileText,
+  ScrollText,
+  Activity,
+  Settings,
   LogOut,
   X,
   HardDrive,
@@ -19,8 +20,24 @@ import { cn } from "@/lib/utils"
 import { VaultIcon } from "@/components/ui/vault-icon"
 import { createClient } from "@/lib/supabase/client"
 
-const navItems = [
-  { label: "Storage", href: "/dashboard", icon: LayoutGrid },
+interface NavItem {
+  label: string
+  href: string
+  icon: React.ElementType
+  disabled?: boolean
+  matchExact?: boolean
+}
+
+const mainNavItems: NavItem[] = [
+  { label: "Dashboard", href: "/dashboard", icon: LayoutGrid, matchExact: true },
+  { label: "Files", href: "/dashboard/files", icon: Folder },
+  { label: "Passwords", href: "#", icon: Lock, disabled: true },
+  { label: "Notes", href: "#", icon: FileText, disabled: true },
+  { label: "Access Logs", href: "#", icon: ScrollText, disabled: true },
+  { label: "Activity", href: "#", icon: Activity, disabled: true },
+]
+
+const bottomNavItems: NavItem[] = [
   { label: "Drives", href: "/dashboard/settings", icon: HardDrive },
 ]
 
@@ -29,10 +46,109 @@ interface SidebarProps {
   onMobileClose?: () => void
 }
 
-export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
+function NavLink({
+  item,
+  isActive,
+  onClick,
+}: {
+  item: NavItem
+  isActive: boolean
+  onClick?: () => void
+}) {
+  const inner = (
+    <span
+      className={cn(
+        "relative flex items-center gap-3 px-3 py-2.5 rounded-sm font-pixel text-xs transition-all border border-transparent",
+        isActive
+          ? "bg-neon-muted text-neon border-neon/40 pixel-shadow-neon"
+          : item.disabled
+          ? "text-text-muted/35 cursor-not-allowed select-none"
+          : "text-text-muted hover:text-text hover:bg-surface-hover hover:border-border"
+      )}
+    >
+      {/* Active indicator */}
+      {isActive && (
+        <span className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-4 bg-neon" />
+      )}
+      <item.icon className="w-4 h-4 shrink-0" />
+      <span className="flex-1 truncate">{item.label}</span>
+      {item.disabled && (
+        <span className="text-[9px] text-text-muted/40 font-pixel bg-surface-hover px-1.5 py-0.5 rounded-none border border-border/40">
+          Soon
+        </span>
+      )}
+    </span>
+  )
+
+  if (item.disabled) return <div>{inner}</div>
+  return (
+    <Link href={item.href} onClick={onClick}>
+      {inner}
+    </Link>
+  )
+}
+
+function SidebarContent({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname()
   const supabase = createClient()
-  const [collapsed, setCollapsed] = useState(false)
+
+  function isItemActive(item: NavItem): boolean {
+    if (item.disabled) return false
+    if (item.matchExact) {
+      return pathname === item.href
+    }
+    return pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href))
+  }
+
+  async function handleSignOut() {
+    await supabase.auth.signOut()
+    window.location.href = "/login"
+  }
+
+  return (
+    <>
+      {/* Logo */}
+      <div className="flex items-center gap-3 px-5 h-16 border-b-2 border-border shrink-0">
+        <VaultIcon />
+        <span className="font-pixel text-base text-neon tracking-wider">ZEKORA</span>
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="ml-auto p-1.5 rounded-none border border-border hover:bg-surface-hover text-text-muted transition-colors"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+
+      {/* Main nav */}
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        {mainNavItems.map((item) => (
+          <NavLink
+            key={item.label}
+            item={item}
+            isActive={isItemActive(item)}
+            onClick={onClose}
+          />
+        ))}
+      </nav>
+
+      {/* Bottom: drives + settings */}
+      <div className="px-3 pb-4 border-t-2 border-border pt-3 space-y-1">
+        {bottomNavItems.map((item) => (
+          <NavLink
+            key={item.label}
+            item={item}
+            isActive={pathname === item.href}
+            onClick={onClose}
+          />
+        ))}
+      </div>
+    </>
+  )
+}
+
+export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
@@ -43,11 +159,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
     return () => mq.removeEventListener("change", handler)
   }, [])
 
-  async function handleSignOut() {
-    await supabase.auth.signOut()
-    window.location.href = "/login"
-  }
-
+  /* ── Mobile drawer ── */
   if (isMobile) {
     return (
       <AnimatePresence>
@@ -57,55 +169,17 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/40 z-40"
+              className="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm"
               onClick={onMobileClose}
             />
             <motion.aside
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
-              transition={{ duration: 0.25, ease: "easeInOut" }}
-              className="fixed left-0 top-0 bottom-0 w-64 flex flex-col border-r border-border bg-surface z-50"
+              transition={{ duration: 0.2, ease: "easeInOut" }}
+              className="fixed left-0 top-0 bottom-0 w-64 max-w-[80vw] flex flex-col border-r-2 border-border bg-surface z-50 pixel-shadow-dark"
             >
-              <div className="flex items-center justify-between px-4 h-16 border-b border-border">
-                <div className="flex items-center gap-3">
-                  <VaultIcon />
-                  <span className="text-sm font-medium text-text">Zekora</span>
-                </div>
-                <button onClick={onMobileClose} className="p-1 rounded-lg hover:bg-surface-hover text-text-muted">
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <nav className="flex-1 p-2 space-y-1">
-                {navItems.map((item) => {
-                  const isActive = pathname === item.href
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={onMobileClose}
-                      className={cn(
-                        "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors",
-                        isActive
-                          ? "bg-primary-muted text-primary"
-                          : "text-text-muted hover:text-text hover:bg-surface-hover"
-                      )}
-                    >
-                      <item.icon className="w-4 h-4 shrink-0" />
-                      {item.label}
-                    </Link>
-                  )
-                })}
-              </nav>
-              <div className="p-2 border-t border-border">
-                <button
-                  onClick={handleSignOut}
-                  className="flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm text-text-muted hover:text-danger hover:bg-danger-muted transition-colors"
-                >
-                  <LogOut className="w-4 h-4 shrink-0" />
-                  Sign out
-                </button>
-              </div>
+              <SidebarContent onClose={onMobileClose} />
             </motion.aside>
           </>
         )}
@@ -113,114 +187,10 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
     )
   }
 
+  /* ── Desktop sidebar ── */
   return (
-    <motion.aside
-      animate={{ width: collapsed ? 64 : 240 }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="hidden md:flex flex-col border-r border-border bg-surface h-dvh sticky top-0 overflow-hidden"
-    >
-      <div className={cn(
-        "flex items-center gap-3 px-4 h-16 border-b border-border",
-        collapsed && "justify-center px-0"
-      )}>
-        <VaultIcon />
-        <AnimatePresence>
-          {!collapsed && (
-            <motion.span
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: "auto" }}
-              exit={{ opacity: 0, width: 0 }}
-              className="text-sm font-medium text-text whitespace-nowrap overflow-hidden"
-            >
-              Zekora
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </div>
-
-      <nav className="flex-1 p-2 space-y-1">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors",
-                collapsed && "justify-center px-0",
-                isActive
-                  ? "bg-primary-muted text-primary"
-                  : "text-text-muted hover:text-text hover:bg-surface-hover"
-              )}
-              title={collapsed ? item.label : undefined}
-            >
-              <item.icon className="w-4 h-4 shrink-0" />
-              <AnimatePresence>
-                {!collapsed && (
-                  <motion.span
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="whitespace-nowrap overflow-hidden"
-                  >
-                    {item.label}
-                  </motion.span>
-                )}
-              </AnimatePresence>
-            </Link>
-          )
-        })}
-      </nav>
-
-      <div className="p-2 border-t border-border">
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className={cn(
-            "flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm text-text-muted hover:text-text hover:bg-surface-hover transition-colors",
-            collapsed && "justify-center px-0"
-          )}
-          title={collapsed ? "Expand" : "Collapse"}
-        >
-          <ChevronLeft className={cn(
-            "w-4 h-4 shrink-0 transition-transform",
-            collapsed && "rotate-180"
-          )} />
-          <AnimatePresence>
-            {!collapsed && (
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="whitespace-nowrap overflow-hidden"
-              >
-                Collapse
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </button>
-        <button
-          onClick={handleSignOut}
-          className={cn(
-            "flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-sm text-text-muted hover:text-danger hover:bg-danger-muted transition-colors",
-            collapsed && "justify-center px-0"
-          )}
-          title="Sign out"
-        >
-          <LogOut className="w-4 h-4 shrink-0" />
-          <AnimatePresence>
-            {!collapsed && (
-              <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="whitespace-nowrap overflow-hidden"
-              >
-                Sign out
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </button>
-      </div>
-    </motion.aside>
+    <aside className="hidden md:flex flex-col w-60 shrink-0 border-r-2 border-border bg-surface h-dvh sticky top-0 z-30">
+      <SidebarContent />
+    </aside>
   )
 }

@@ -1,9 +1,9 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { getGoogleAccounts } from "@/lib/supabase/models"
-import { DashboardOverview } from "@/components/dashboard/dashboard-overview"
+import { FileExplorer } from "@/components/vault/FileExplorer"
 
-export default async function DashboardPage() {
+export default async function FilesPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/login")
@@ -11,7 +11,7 @@ export default async function DashboardPage() {
   const accounts = await getGoogleAccounts(user.id)
 
   return (
-    <DashboardOverview
+    <FileExplorer
       accounts={accounts.map((a) => ({
         id: a.id,
         account_email: a.account_email,

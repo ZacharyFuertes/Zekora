@@ -67,15 +67,14 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className="space-y-6 max-w-3xl"
+      transition={{ duration: 0.3 }}
+      className="space-y-6 max-w-4xl mx-auto pb-10"
     >
       {/* Header */}
-      <div>
-        <h1 className="text-lg font-medium text-text font-mono tracking-wide">STORAGE</h1>
-        <p className="text-sm text-text-muted mt-1">
-          Link multiple Google Drive accounts to expand your vault&apos;s capacity.
-          Each free account adds 15&nbsp;GB.
+      <div className="border-b border-border/40 pb-3">
+        <h1 className="font-pixel text-base sm:text-lg font-bold text-text uppercase tracking-wider">STORAGE & DRIVES</h1>
+        <p className="font-pixel text-[10px] text-text-muted mt-1.5 leading-relaxed">
+          LINK MULTIPLE GOOGLE DRIVE ACCOUNTS TO EXPAND YOUR VAULT&apos;S CAPACITY. EACH FREE ACCOUNT ADDS 15&nbsp;GB.
         </p>
       </div>
 
@@ -83,17 +82,19 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
       <StoragePoolMeter pool={initialPool} accountCount={accounts.length} />
 
       {/* Accounts section */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-text-muted font-mono uppercase tracking-widest">Connected Drives</span>
+      <div className="space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <span className="font-pixel text-xs font-bold text-text uppercase tracking-wider">
+            CONNECTED DRIVES ({accounts.length})
+          </span>
           <button
             onClick={handleConnect}
             disabled={connectState.status === "connecting"}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border-2",
+              "flex items-center justify-center gap-2 px-4 py-2.5 rounded-none font-pixel text-xs font-bold transition-all border-2 active:translate-x-0.5 active:translate-y-0.5",
               connectState.status === "connecting"
                 ? "bg-surface-hover text-text-muted cursor-wait border-border"
-                : "bg-neon text-bg border-neon/60 hover:bg-neon-hover hover:shadow-[0_0_15px_rgba(255,45,120,0.3)] active:scale-95"
+                : "bg-neon text-bg border-neon pixel-shadow-neon hover:bg-neon-hover"
             )}
           >
             {connectState.status === "connecting" ? (
@@ -101,7 +102,7 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
             ) : (
               <Plus className="w-4 h-4" />
             )}
-            Add Google Account
+            <span>ADD GOOGLE ACCOUNT</span>
           </button>
         </div>
 
@@ -109,10 +110,10 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
           <motion.div
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 text-xs text-danger bg-danger-muted border border-danger/20 rounded-xl px-4 py-2.5"
+            className="flex items-center gap-2 font-pixel text-[10px] text-danger bg-danger-muted border border-danger/40 p-3"
           >
-            <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
-            {connectState.message}
+            <AlertTriangle className="w-4 h-4 shrink-0" />
+            <span>{connectState.message?.toUpperCase()}</span>
           </motion.div>
         )}
 
@@ -123,21 +124,21 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="flex flex-col items-center justify-center py-16 text-center rounded-xl border-2 border-dashed border-crimson/30 bg-surface/50"
+              className="flex flex-col items-center justify-center py-16 text-center border-2 border-dashed border-crimson/40 bg-surface/50 p-6"
             >
-              <div className="w-16 h-16 rounded-2xl bg-surface border-2 border-crimson/30 flex items-center justify-center mb-4 shadow-[0_0_15px_rgba(167,50,72,0.15)]">
-                <HardDrive className="w-7 h-7 text-crimson" />
+              <div className="w-16 h-16 border-2 border-crimson/60 bg-surface flex items-center justify-center mb-4 pixel-shadow-crimson">
+                <HardDrive className="w-8 h-8 text-crimson" />
               </div>
-              <h3 className="text-base font-medium text-text">No drives connected</h3>
-              <p className="text-sm text-text-muted mt-1 max-w-xs">
-                Connect your first Google account to unlock 15&nbsp;GB of secure storage.
+              <h3 className="font-pixel text-xs font-bold text-text">NO DRIVES CONNECTED</h3>
+              <p className="font-pixel text-[10px] text-text-muted mt-2 max-w-xs leading-relaxed">
+                CONNECT YOUR FIRST GOOGLE ACCOUNT TO UNLOCK 15&nbsp;GB OF SECURE STORAGE.
               </p>
               <button
                 onClick={handleConnect}
-                className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium bg-neon text-bg border-2 border-neon/60 hover:bg-neon-hover hover:shadow-[0_0_15px_rgba(255,45,120,0.3)] transition-all active:scale-95"
+                className="mt-5 flex items-center gap-2 px-5 py-2.5 rounded-none font-pixel text-xs font-bold bg-neon text-bg border-2 border-neon pixel-shadow-neon hover:bg-neon-hover transition-all active:translate-x-0.5 active:translate-y-0.5"
               >
                 <Plus className="w-4 h-4" />
-                Connect first account
+                <span>CONNECT FIRST ACCOUNT</span>
               </button>
             </motion.div>
           ) : (
@@ -153,33 +154,33 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, x: -16, height: 0, marginBottom: 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="rounded-xl border-2 border-crimson/30 bg-surface p-5 shadow-[0_0_15px_rgba(167,50,72,0.1)] hover:shadow-[0_0_20px_rgba(167,50,72,0.18)] transition-shadow"
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  className="border-2 border-crimson/40 bg-surface p-4 sm:p-5 pixel-shadow-crimson space-y-3"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3.5">
                     {/* Drive icon */}
-                    <div className="w-12 h-12 rounded-xl bg-crimson-muted border-2 border-crimson/30 flex items-center justify-center shrink-0">
+                    <div className="w-12 h-12 rounded-none bg-crimson-muted/40 border-2 border-crimson/50 flex items-center justify-center shrink-0">
                       <HardDrive className="w-6 h-6 text-crimson" />
                     </div>
 
                     {/* Info */}
                     <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium text-text truncate font-mono">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="font-pixel text-xs font-bold text-text truncate" title={account.account_email}>
                           {account.account_email}
                         </p>
                         <span className={cn(
-                          "shrink-0 flex items-center gap-1 text-[10px] font-mono uppercase px-2 py-0.5 rounded-md border",
+                          "shrink-0 flex items-center gap-1 font-pixel text-[8px] uppercase px-2 py-0.5 border font-bold",
                           account.is_active
-                            ? "text-neon bg-neon-muted border-neon/20"
+                            ? "text-neon bg-neon-muted border-neon/40"
                             : "text-text-muted bg-surface-hover border-border"
                         )}>
                           {account.is_active ? <Check className="w-3 h-3" /> : <Shield className="w-3 h-3" />}
-                          {account.is_active ? "Active" : "Inactive"}
+                          {account.is_active ? "ACTIVE" : "INACTIVE"}
                         </span>
                       </div>
-                      <p className="text-xs text-text-muted mt-1 font-mono">
-                        {formatFileSize(account.used_space)} of {formatFileSize(account.total_space)} used
+                      <p className="font-pixel text-[9px] text-text-muted mt-1">
+                        {formatFileSize(account.used_space)} OF {formatFileSize(account.total_space)} USED
                       </p>
                     </div>
 
@@ -187,8 +188,9 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
                     <button
                       onClick={() => handleUnlink(account.id)}
                       disabled={removingId === account.id}
-                      className="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center text-text-muted hover:text-danger hover:bg-danger-muted border border-transparent hover:border-danger/30 transition-all"
+                      className="shrink-0 w-8 h-8 rounded-none flex items-center justify-center text-text-muted hover:text-danger hover:bg-danger-muted border border-transparent hover:border-danger/40 transition-all"
                       aria-label={`Unlink ${account.account_email}`}
+                      title="Unlink Drive"
                     >
                       {removingId === account.id ? (
                         <Loader2 className="w-4 h-4 animate-spin" />
@@ -199,26 +201,26 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
                   </div>
 
                   {/* Progress bar */}
-                  <div className="mt-4 h-2 rounded-full bg-bg border-2 border-border overflow-hidden">
+                  <div className="h-3 rounded-none bg-bg border-2 border-border p-0.5 overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${Math.min(usedPercent, 100)}%` }}
                       transition={{ duration: 0.8, ease: "easeOut" }}
                       className={cn(
-                        "h-full rounded-full",
+                        "h-full rounded-none",
                         usedPercent > 90
                           ? "bg-gradient-to-r from-crimson to-danger"
                           : usedPercent > 70
-                          ? "bg-gradient-to-r from-crimson to-secondary"
+                          ? "bg-gradient-to-r from-crimson to-amber-400"
                           : "bg-gradient-to-r from-crimson to-neon"
                       )}
                     />
                   </div>
-                  <div className="flex items-center justify-between mt-1.5">
-                    <p className="text-[10px] text-text-muted font-mono">
-                      Free: {formatFileSize(Math.max(account.total_space - account.used_space, 0))}
+                  <div className="flex items-center justify-between font-pixel text-[9px] text-text-muted">
+                    <p>
+                      FREE: {formatFileSize(Math.max(account.total_space - account.used_space, 0))}
                     </p>
-                    <p className="text-[10px] text-text-muted font-mono">
+                    <p>
                       {usedPercent}%
                     </p>
                   </div>
