@@ -3,6 +3,7 @@ import { decryptToken } from "@/lib/encryption"
 import { GOOGLE_OAUTH_CONFIG } from "@/lib/google-oauth"
 
 const DRIVE_BASE = "https://www.googleapis.com/drive/v3"
+const DRIVE_UPLOAD_BASE = "https://www.googleapis.com/upload/drive/v3"
 
 export interface DriveFile {
   id: string
@@ -17,6 +18,15 @@ export interface DriveFile {
 export interface UploadResult {
   file: DriveFile
   accessToken: string
+}
+
+function errorMessage(payload: { [k: string]: unknown }): string {
+  const err = payload.error
+  if (err && typeof err === "object") {
+    const msg = (err as { message?: unknown }).message
+    if (typeof msg === "string") return msg
+  }
+  return ""
 }
 
 async function refreshAccessToken(refreshToken: string) {
@@ -94,12 +104,15 @@ export async function getDriveConnection(
   }
 
   async function driveFetch(path: string, init?: RequestInit) {
-    let res = await fetch(`${DRIVE_BASE}${path}`, init)
+    let res = await fetch(`${DRIVE_BASE}${path}`, {
+      ...init,
+      headers: { Authorization: `Bearer ${token}`, ...(init?.headers ?? {}) },
+    })
     if (res.status === 401) {
       token = await authorizedToken()
       res = await fetch(`${DRIVE_BASE}${path}`, {
         ...init,
-        headers: { ...(init?.headers ?? {}), Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}`, ...(init?.headers ?? {}) },
       })
     }
     if (!res.ok) {
@@ -107,6 +120,27 @@ export async function getDriveConnection(
       throw new Error(`Drive API error (${res.status}): ${body}`)
     }
     return res
+  }
+
+  async function driveFetchRaw(url: string, init?: RequestInit) {
+    let res = await fetch(url, init)
+    if (res.status === 401) {
+      token = await authorizedToken()
+      res = await fetch(url, {
+        ...init,
+        headers: { ...(init?.headers ?? {}), Authorization: `Bearer ${token}` },
+      })
+    }
+    return res
+  }
+
+  async function safeJson(res: Response): Promise<{ [k: string]: unknown }> {
+    const text = await res.text()
+    try {
+      return text ? (JSON.parse(text) as { [k: string]: unknown }) : {}
+    } catch {
+      return { error: { message: text } }
+    }
   }
 
   return {
@@ -146,10 +180,10 @@ export async function getDriveConnection(
       return (data.files ?? []) as DriveFile[]
     },
     async upload(name, mimeType, body, parentId) {
-      const metadata: Record<string, unknown> = { name, mimeType: mimeType || "application/octet-stream" }
+      const mime = mimeType || "application/octet-stream"
+      const metadata: Record<string, unknown> = { name, mimeType: mime }
       if (parentId) metadata.parents = [parentId]
 
-      // Use a distinctive, safe boundary (Drive rejects collisions in body bytes).
       const boundary = `Zaekora${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`
 
       const header = Buffer.from(
@@ -157,24 +191,29 @@ export async function getDriveConnection(
         `Content-Type: application/json; charset=UTF-8\r\n\r\n` +
         `${JSON.stringify(metadata)}\r\n` +
         `--${boundary}\r\n` +
-        `Content-Type: ${mimeType || "application/octet-stream"}\r\n` +
+        `Content-Type: ${mime}\r\n` +
         `Content-Transfer-Encoding: binary\r\n\r\n`
       )
       const footer = Buffer.from(`\r\n--${boundary}--\r\n`)
+      const fullBody = Buffer.concat([header, body, footer])
 
-      const res = await driveFetch(
-        `/files?uploadType=multipart&fields=id,name,mimeType,size,createdTime,modifiedTime,parents`,
+      const res = await driveFetchRaw(
+        `${DRIVE_UPLOAD_BASE}/files?uploadType=multipart&fields=id,name,mimeType,size,createdTime,modifiedTime,parents`,
         {
           method: "POST",
           headers: {
-            "Authorization": `Bearer ${token}`,
+            ...driveHeaders(),
             "Content-Type": `multipart/related; boundary=${boundary}`,
+            "Content-Length": String(fullBody.length),
           },
-          body: Buffer.concat([header, body, footer]),
+          body: fullBody as unknown as BodyInit,
         }
       )
-      const file = await res.json()
-      return { file: file as DriveFile, accessToken: token }
+      const file = await safeJson(res)
+      if (!res.ok) {
+        throw new Error(errorMessage(file) || `Drive upload failed (${res.status})`)
+      }
+      return { file: file as unknown as DriveFile, accessToken: token }
     },
     async createFolder(name, parentId) {
       const metadata: Record<string, unknown> = {

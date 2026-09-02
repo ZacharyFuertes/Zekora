@@ -20,12 +20,8 @@ import { VaultIcon } from "@/components/ui/vault-icon"
 import { createClient } from "@/lib/supabase/client"
 
 const navItems = [
-  { label: "All Files", href: "/dashboard", icon: LayoutGrid },
-  { label: "Collections", href: "/dashboard/collections", icon: Folder },
-  { label: "Notes", href: "/dashboard/notes", icon: File },
-  { label: "Tags", href: "/dashboard/tags", icon: Tags },
-  { label: "Recent", href: "/dashboard/recent", icon: Clock },
-  { label: "Storage", href: "/dashboard/settings", icon: HardDrive },
+  { label: "Storage", href: "/dashboard", icon: LayoutGrid },
+  { label: "Drives", href: "/dashboard/settings", icon: HardDrive },
 ]
 
 interface SidebarProps {
@@ -37,12 +33,11 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname()
   const supabase = createClient()
   const [collapsed, setCollapsed] = useState(false)
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches
-  )
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)")
+    setIsMobile(mq.matches)
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
     mq.addEventListener("change", handler)
     return () => mq.removeEventListener("change", handler)

@@ -1,26 +1,24 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { listRootFiles } from "@/lib/google-drive/pool"
-import { DashboardContent } from "./dashboard-content"
+import { getGoogleAccounts } from "@/lib/supabase/models"
+import { FileExplorer } from "@/components/vault/FileExplorer"
 
 export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/login")
 
-  const files = await listRootFiles(user.id)
+  const accounts = await getGoogleAccounts(user.id)
 
   return (
-    <DashboardContent
-      files={files.map((f) => ({
-        id: f.id,
-        name: f.name,
-        mimeType: f.mimeType,
-        size: f.size,
-        url: `/api/drive/files/${f.id}?accountId=${f.accountId}`,
-        created_at: f.created_at,
-        modified_at: f.modified_at,
-        account_email: f.account_email,
+    <FileExplorer
+      accounts={accounts.map((a) => ({
+        id: a.id,
+        account_email: a.account_email,
+        total_space: a.total_space,
+        used_space: a.used_space,
+        is_active: a.is_active,
+        created_at: a.created_at,
       }))}
     />
   )

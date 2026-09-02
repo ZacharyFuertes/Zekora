@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { getGoogleAccounts } from "@/lib/supabase/models"
 import { getStoragePool } from "@/lib/google-drive/pool"
-import { ConnectedDrivesManager } from "./connected-drives-manager"
+import { ConnectedDrivesManager } from "@/components/drives/DrivesManager"
 
 export default async function StorageSettingsPage() {
   const supabase = await createClient()

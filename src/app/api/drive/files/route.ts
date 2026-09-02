@@ -17,36 +17,42 @@ export async function GET(request: Request) {
   const query = searchParams.get("q")
 
   try {
-    const connections =
-      accountId && accountId !== "root"
-        ? [{ accountId, connection: await getDriveConnection(user.id, accountId) }]
-        : await Promise.all(
-            (await getGoogleAccounts(user.id)).map(async (account) => ({
-              accountId: account.id,
-              connection: await getDriveConnection(user.id, account.id),
-            }))
-          )
+    const accounts = accountId && accountId !== "root"
+      ? [{ id: accountId }]
+      : await getGoogleAccounts(user.id)
+
+    const connectionResults = await Promise.allSettled(
+      accounts.map(async (account) => ({
+        accountId: account.id,
+        connection: await getDriveConnection(user.id, account.id),
+      }))
+    )
+
+    const liveConnections = connectionResults
+      .filter((r): r is PromiseFulfilledResult<{ accountId: string; connection: Awaited<ReturnType<typeof getDriveConnection>> }> => r.status === "fulfilled")
+      .map((r) => r.value)
 
     const results = await Promise.all(
-      connections.map(async ({ accountId: id, connection }) => {
-        let files
-        if (query) {
-          files = await connection.search(query)
-        } else {
-          files = await connection.listFiles(folderId)
-        }
-        return {
-          accountId: id,
-          files: files.map((f) => ({
-            id: f.id,
+      liveConnections.map(async ({ accountId: id, connection }) => {
+        try {
+          const files = query
+            ? await connection.search(query)
+            : await connection.listFiles(folderId)
+          return {
             accountId: id,
-            name: f.name,
-            mimeType: f.mimeType,
-            size: Number(f.size ?? 0),
-            created_at: f.createdTime,
-            modified_at: f.modifiedTime,
-            isFolder: f.mimeType === "application/vnd.google-apps.folder",
-          })),
+            files: files.map((f) => ({
+              id: f.id,
+              accountId: id,
+              name: f.name,
+              mimeType: f.mimeType,
+              size: Number(f.size ?? 0),
+              created_at: f.createdTime,
+              modified_at: f.modifiedTime,
+              isFolder: f.mimeType === "application/vnd.google-apps.folder",
+            })),
+          }
+        } catch {
+          return { accountId: id, files: [], error: "Failed to load files for this account" }
         }
       })
     )
