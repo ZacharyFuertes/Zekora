@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { getCollections } from "@/lib/mongodb/collections"
+import { getCollections } from "@/lib/supabase/models"
 import { CollectionsContent } from "./collections-content"
 
 export default async function CollectionsPage() {
@@ -9,11 +9,6 @@ export default async function CollectionsPage() {
   if (!user) redirect("/login")
 
   const collections = await getCollections(user.id)
-  const serialized = collections.map((c) => ({
-    ...c,
-    _id: c._id!.toString(),
-    created_at: c.created_at.toISOString(),
-  }))
 
-  return <CollectionsContent collections={serialized} />
+  return <CollectionsContent collections={collections} />
 }

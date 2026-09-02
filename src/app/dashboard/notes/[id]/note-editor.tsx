@@ -22,8 +22,8 @@ export function NoteEditor({ note, isNew, collections, tagSuggestions }: NoteEdi
   const [title, setTitle] = useState(note?.title ?? "")
   const [content, setContent] = useState(note?.content ?? "")
   const [tags, setTags] = useState<string[]>(note?.tags ?? [])
-  const [collectionId, setCollectionId] = useState<string | undefined>(note?.collection_id)
-  const [mood, setMood] = useState<string | undefined>(note?.mood)
+  const [collectionId, setCollectionId] = useState<string | undefined>(note?.collection_id ?? undefined)
+  const [mood, setMood] = useState<string | undefined>(note?.mood ?? undefined)
   const [saving, setSaving] = useState(false)
 
   async function handleSave() {
@@ -36,9 +36,9 @@ export function NoteEditor({ note, isNew, collections, tagSuggestions }: NoteEdi
           body: JSON.stringify({ title, content, tags, collection_id: collectionId, mood, type: "standalone" }),
         })
         const data = await res.json()
-        router.push(`/dashboard/notes/${data.note._id}`)
+        router.push(`/dashboard/notes/${data.note.id}`)
       } else if (note) {
-        await fetch(`/api/notes/${note._id}`, {
+        await fetch(`/api/notes/${note.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title, content, tags, collection_id: collectionId, mood }),

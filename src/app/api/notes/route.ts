@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
-import { getNotes, createNote } from "@/lib/mongodb/notes"
+import { getNotes, createNote } from "@/lib/supabase/models"
 
 export async function GET() {
   const supabase = await createClient()
@@ -8,13 +8,7 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const notes = await getNotes(user.id)
-  const serialized = notes.map((n) => ({
-    ...n,
-    _id: n._id!.toString(),
-    created_at: n.created_at.toISOString(),
-    updated_at: n.updated_at.toISOString(),
-  }))
-  return NextResponse.json({ notes: serialized })
+  return NextResponse.json({ notes })
 }
 
 export async function POST(request: Request) {
@@ -24,12 +18,5 @@ export async function POST(request: Request) {
 
   const body = await request.json()
   const note = await createNote({ user_id: user.id, ...body })
-  return NextResponse.json({
-    note: {
-      ...note,
-      _id: note._id!.toString(),
-      created_at: note.created_at.toISOString(),
-      updated_at: note.updated_at.toISOString(),
-    },
-  })
+  return NextResponse.json({ note })
 }

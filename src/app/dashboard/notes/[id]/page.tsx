@@ -1,8 +1,8 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { getNote } from "@/lib/mongodb/notes"
-import { getCollections } from "@/lib/mongodb/collections"
-import { getTags } from "@/lib/mongodb/tags"
+import { getNote } from "@/lib/supabase/models"
+import { getCollections } from "@/lib/supabase/models"
+import { getTags } from "@/lib/supabase/models"
 import { NoteEditor } from "./note-editor"
 
 export default async function NotePage({
@@ -19,15 +19,7 @@ export default async function NotePage({
 
   let note = null
   if (!isNew) {
-    const doc = await getNote(id)
-    if (doc) {
-      note = {
-        ...doc,
-        _id: doc._id!.toString(),
-        created_at: doc.created_at.toISOString(),
-        updated_at: doc.updated_at.toISOString(),
-      }
-    }
+    note = await getNote(id)
   }
 
   const [collections, tags] = await Promise.all([
@@ -39,7 +31,7 @@ export default async function NotePage({
     <NoteEditor
       note={note}
       isNew={isNew}
-      collections={collections.map((c) => ({ ...c, _id: c._id!.toString(), created_at: c.created_at.toISOString() }))}
+      collections={collections}
       tagSuggestions={tags.map((t) => t.name)}
     />
   )

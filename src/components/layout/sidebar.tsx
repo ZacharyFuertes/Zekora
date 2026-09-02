@@ -13,7 +13,7 @@ import {
   ChevronLeft,
   LogOut,
   X,
-  Menu,
+  HardDrive,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { VaultIcon } from "@/components/ui/vault-icon"
@@ -25,6 +25,7 @@ const navItems = [
   { label: "Notes", href: "/dashboard/notes", icon: File },
   { label: "Tags", href: "/dashboard/tags", icon: Tags },
   { label: "Recent", href: "/dashboard/recent", icon: Clock },
+  { label: "Storage", href: "/dashboard/settings", icon: HardDrive },
 ]
 
 interface SidebarProps {
@@ -36,11 +37,12 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const pathname = usePathname()
   const supabase = createClient()
   const [collapsed, setCollapsed] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches
+  )
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 768px)")
-    setIsMobile(mq.matches)
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
     mq.addEventListener("change", handler)
     return () => mq.removeEventListener("change", handler)

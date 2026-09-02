@@ -34,7 +34,7 @@ export function TagsContent({ tags: initial }: TagsContentProps) {
   async function handleDelete(id: string) {
     const res = await fetch(`/api/tags/${id}`, { method: "DELETE" })
     if (res.ok) {
-      setTags((prev) => prev.filter((t) => t._id !== id))
+      setTags((prev) => prev.filter((t) => t.id !== id))
       router.refresh()
     }
   }
@@ -102,7 +102,7 @@ export function TagsContent({ tags: initial }: TagsContentProps) {
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <motion.div
-              key={tag._id}
+              key={tag.id}
               layout
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -110,7 +110,7 @@ export function TagsContent({ tags: initial }: TagsContentProps) {
             >
               <span className="text-sm text-text">{tag.name}</span>
               <button
-                onClick={() => handleDelete(tag._id)}
+                onClick={() => handleDelete(tag.id)}
                 className="text-text-muted hover:text-danger transition-colors"
               >
                 <X className="w-3 h-3" />

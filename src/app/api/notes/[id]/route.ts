@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
-import { getNote, updateNote, deleteNote } from "@/lib/mongodb/notes"
+import { getNote, updateNote, deleteNote } from "@/lib/supabase/models"
 
 export async function GET(
   _request: Request,
@@ -14,14 +14,7 @@ export async function GET(
   const note = await getNote(id)
   if (!note) return NextResponse.json({ error: "Not found" }, { status: 404 })
 
-  return NextResponse.json({
-    note: {
-      ...note,
-      _id: note._id!.toString(),
-      created_at: note.created_at.toISOString(),
-      updated_at: note.updated_at.toISOString(),
-    },
-  })
+  return NextResponse.json({ note })
 }
 
 export async function PATCH(
@@ -37,14 +30,7 @@ export async function PATCH(
   const note = await updateNote(id, body)
   if (!note) return NextResponse.json({ error: "Not found" }, { status: 404 })
 
-  return NextResponse.json({
-    note: {
-      ...note,
-      _id: note._id!.toString(),
-      created_at: note.created_at.toISOString(),
-      updated_at: note.updated_at.toISOString(),
-    },
-  })
+  return NextResponse.json({ note })
 }
 
 export async function DELETE(

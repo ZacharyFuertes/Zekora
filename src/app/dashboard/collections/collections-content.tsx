@@ -40,7 +40,7 @@ export function CollectionsContent({ collections: initial }: CollectionsContentP
   async function handleDelete(id: string) {
     const res = await fetch(`/api/collections/${id}`, { method: "DELETE" })
     if (res.ok) {
-      setCollections((prev) => prev.filter((c) => c._id !== id))
+      setCollections((prev) => prev.filter((c) => c.id !== id))
       router.refresh()
     }
   }
@@ -134,7 +134,7 @@ export function CollectionsContent({ collections: initial }: CollectionsContentP
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {collections.map((c) => (
             <motion.div
-              key={c._id}
+              key={c.id}
               layout
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -151,7 +151,7 @@ export function CollectionsContent({ collections: initial }: CollectionsContentP
                   </div>
                 </div>
                 <button
-                  onClick={() => handleDelete(c._id)}
+                  onClick={() => handleDelete(c.id)}
                   className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-text-muted opacity-0 group-hover:opacity-100 hover:text-danger hover:bg-danger-muted transition-all"
                 >
                   <Trash2 className="w-4 h-4" />

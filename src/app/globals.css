@@ -8,6 +8,17 @@
   --color-primary: #a78bfa;
   --color-primary-hover: #8b5cf6;
   --color-primary-muted: rgba(167, 139, 250, 0.1);
+
+  /* Gengar neon pink accent */
+  --color-neon: #ff2d78;
+  --color-neon-hover: #ff5c95;
+  --color-neon-muted: rgba(255, 45, 120, 0.12);
+
+  /* Muted crimson accent */
+  --color-crimson: #a73248;
+  --color-crimson-hover: #c64860;
+  --color-crimson-muted: rgba(167, 50, 72, 0.14);
+
   --color-secondary: #f59e0b;
   --color-secondary-muted: rgba(245, 158, 11, 0.1);
   --color-text: #e4e4e7;

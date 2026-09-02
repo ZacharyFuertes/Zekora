@@ -19,7 +19,7 @@ export function NotesContent({ notes: initialNotes }: NotesContentProps) {
   async function handleDelete(id: string) {
     const res = await fetch(`/api/notes/${id}`, { method: "DELETE" })
     if (res.ok) {
-      setNotes((prev) => prev.filter((n) => n._id !== id))
+      setNotes((prev) => prev.filter((n) => n.id !== id))
       router.refresh()
     }
   }
@@ -59,14 +59,14 @@ export function NotesContent({ notes: initialNotes }: NotesContentProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {notes.map((note) => (
             <motion.div
-              key={note._id}
+              key={note.id}
               layout
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               className="group rounded-2xl border border-border bg-surface p-4 hover:bg-surface-hover transition-colors"
             >
               <div className="flex items-start justify-between gap-2">
-                <Link href={`/dashboard/notes/${note._id}`} className="flex-1 min-w-0">
+                <Link href={`/dashboard/notes/${note.id}`} className="flex-1 min-w-0">
                   <h3 className="text-sm font-medium text-text truncate">{note.title}</h3>
                   <p className="text-xs text-text-muted mt-1.5 line-clamp-2">{note.content}</p>
                   <div className="flex items-center gap-2 mt-2">
@@ -84,7 +84,7 @@ export function NotesContent({ notes: initialNotes }: NotesContentProps) {
                   <p className="text-[10px] text-text-muted/60 mt-2">{formatDate(note.updated_at)}</p>
                 </Link>
                 <button
-                  onClick={() => handleDelete(note._id)}
+                  onClick={() => handleDelete(note.id)}
                   className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-text-muted opacity-0 group-hover:opacity-100 hover:text-danger hover:bg-danger-muted transition-all"
                 >
                   <Trash2 className="w-4 h-4" />

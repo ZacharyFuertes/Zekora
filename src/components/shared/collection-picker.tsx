@@ -13,7 +13,7 @@ interface CollectionPickerProps {
 
 export function CollectionPicker({ collections, value, onChange }: CollectionPickerProps) {
   const [open, setOpen] = useState(false)
-  const selected = collections.find((c) => c._id === value)
+  const selected = collections.find((c) => c.id === value)
 
   return (
     <div className="relative">
@@ -58,8 +58,8 @@ export function CollectionPicker({ collections, value, onChange }: CollectionPic
             </button>
             {collections.map((c) => (
               <button
-                key={c._id}
-                onClick={() => { onChange(c._id); setOpen(false) }}
+                key={c.id}
+                onClick={() => { onChange(c.id); setOpen(false) }}
                 className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg text-sm text-text hover:bg-surface-hover transition-colors"
               >
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: c.color }} />

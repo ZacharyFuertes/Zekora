@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
-import { getTags } from "@/lib/mongodb/tags"
+import { getTags } from "@/lib/supabase/models"
 import { TagsContent } from "./tags-content"
 
 export default async function TagsPage() {
@@ -9,11 +9,6 @@ export default async function TagsPage() {
   if (!user) redirect("/login")
 
   const tags = await getTags(user.id)
-  const serialized = tags.map((t) => ({
-    ...t,
-    _id: t._id!.toString(),
-    created_at: t.created_at.toISOString(),
-  }))
 
-  return <TagsContent tags={serialized} />
+  return <TagsContent tags={tags} />
 }

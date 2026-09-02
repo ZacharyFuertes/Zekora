@@ -29,7 +29,7 @@ interface FileCardProps {
 }
 
 export function FileCard({ file, onDelete }: FileCardProps) {
-  const Icon = iconMap[getFileIcon(file.type) as keyof typeof iconMap] || File
+  const Icon = iconMap[getFileIcon(file.mimeType) as keyof typeof iconMap] || File
 
   return (
     <motion.div
@@ -49,7 +49,7 @@ export function FileCard({ file, onDelete }: FileCardProps) {
             {file.name}
           </p>
           <p className="text-xs text-text-muted mt-0.5">
-            {formatFileSize(file.size)} &middot; {formatDate(file.created_at)}
+            {formatFileSize(file.size)} &middot; {formatDate(file.modified_at)}
           </p>
         </div>
         {onDelete && (
@@ -61,7 +61,7 @@ export function FileCard({ file, onDelete }: FileCardProps) {
           </button>
         )}
       </div>
-      {file.type.startsWith("image/") && (
+      {file.mimeType.startsWith("image/") && (
         <div
           className="mt-3 rounded-xl overflow-hidden bg-bg aspect-video bg-cover bg-center"
           style={{ backgroundImage: `url(${file.url})` }}

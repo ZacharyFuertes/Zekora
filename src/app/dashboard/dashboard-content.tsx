@@ -1,51 +1,26 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
-import { useRouter } from "next/navigation"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState, useCallback } from "react"
+import { motion } from "framer-motion"
 import { FileUpload } from "@/components/files/file-upload"
 import { FileGrid } from "@/components/files/file-grid"
-import { TagInput } from "@/components/shared/tag-input"
-import { CollectionPicker } from "@/components/shared/collection-picker"
-import { X } from "lucide-react"
-import type { FileMetadata, Collection, Tag } from "@/types"
+import type { FileMetadata } from "@/types"
 
 interface DashboardContentProps {
   files: FileMetadata[]
-  collections: Collection[]
-  tags: Tag[]
 }
 
-export function DashboardContent({ files: initialFiles, collections, tags }: DashboardContentProps) {
-  const router = useRouter()
+export function DashboardContent({ files: initialFiles }: DashboardContentProps) {
   const [files, setFiles] = useState(initialFiles)
   const [uploadError, setUploadError] = useState("")
-  const [filterTags, setFilterTags] = useState<string[]>([])
-  const [filterCollection, setFilterCollection] = useState<string | undefined>()
-
-  const hasFilters = filterTags.length > 0 || filterCollection !== undefined
-
-  const filteredFiles = useMemo(() => {
-    let result = files
-    if (filterTags.length > 0) {
-      result = result.filter((f) => false)
-      return result
-    }
-    if (filterCollection) {
-      result = result.filter((f) => false)
-      return result
-    }
-    return result
-  }, [files, filterTags, filterCollection])
-
-  const displayFiles = hasFilters ? filteredFiles : files
 
   const handleUpload = useCallback(async (file: File) => {
     setUploadError("")
     const formData = new FormData()
     formData.append("file", file)
+    formData.append("mode", "smart")
 
-    const res = await fetch("/api/files", {
+    const res = await fetch("/api/storage/upload", {
       method: "POST",
       body: formData,
     })
@@ -53,17 +28,31 @@ export function DashboardContent({ files: initialFiles, collections, tags }: Das
     const data = await res.json()
     if (!res.ok) throw new Error(data.error ?? "Upload failed")
 
-    setFiles((prev) => [data.file, ...prev])
-    router.refresh()
-  }, [router])
+    const uploaded: FileMetadata = {
+      id: data.file.id,
+      name: data.file.name,
+      mimeType: data.file.mimeType,
+      size: Number(data.file.size ?? 0),
+      url: `/api/drive/files/${data.file.id}?accountId=${data.accountId}`,
+      created_at: data.file.createdTime,
+      modified_at: data.file.modifiedTime,
+      account_email: undefined,
+    }
+    setFiles((prev) => [uploaded, ...prev])
+  }, [])
 
   const handleDelete = useCallback(async (id: string) => {
-    const res = await fetch(`/api/files/${id}`, { method: "DELETE" })
+    const file = files.find((f) => f.id === id)
+    if (!file) return
+    const url = new URL(file.url, window.location.origin)
+    const accountId = url.searchParams.get("accountId")
+    const res = await fetch(`/api/drive/files/${id}?accountId=${accountId}`, {
+      method: "DELETE",
+    })
     if (res.ok) {
       setFiles((prev) => prev.filter((f) => f.id !== id))
-      router.refresh()
     }
-  }, [router])
+  }, [files])
 
   return (
     <motion.div
@@ -83,39 +72,7 @@ export function DashboardContent({ files: initialFiles, collections, tags }: Das
 
       {uploadError && <p className="text-sm text-danger">{uploadError}</p>}
 
-      {(collections.length > 0 || tags.length > 0) && (
-        <div className="space-y-3 p-4 rounded-2xl border border-border bg-surface">
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-text-muted font-medium">Filters</span>
-            {hasFilters && (
-              <button
-                onClick={() => { setFilterTags([]); setFilterCollection(undefined) }}
-                className="flex items-center gap-1 text-xs text-text-muted hover:text-text transition-colors"
-              >
-                <X className="w-3 h-3" />
-                Clear
-              </button>
-            )}
-          </div>
-          {collections.length > 0 && (
-            <CollectionPicker
-              collections={collections}
-              value={filterCollection}
-              onChange={setFilterCollection}
-            />
-          )}
-          {tags.length > 0 && (
-            <TagInput
-              tags={filterTags}
-              onChange={setFilterTags}
-              suggestions={tags.map((t) => t.name)}
-              placeholder="Filter by tags..."
-            />
-          )}
-        </div>
-      )}
-
-      <FileGrid files={displayFiles} onDelete={handleDelete} />
+      <FileGrid files={files} onDelete={handleDelete} />
     </motion.div>
   )
 }

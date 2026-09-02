@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+import { listRecentFiles } from "@/lib/google-drive/pool"
 import { RecentContent } from "./recent-content"
 
 export default async function RecentPage() {
@@ -7,12 +8,20 @@ export default async function RecentPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/login")
 
-  const { data: files } = await supabase
-    .from("files")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false })
-    .limit(20)
+  const files = await listRecentFiles(user.id, 20)
 
-  return <RecentContent files={files ?? []} />
+  return (
+    <RecentContent
+      files={files.map((f) => ({
+        id: f.id,
+        name: f.name,
+        mimeType: f.mimeType,
+        size: f.size,
+        url: `/api/drive/files/${f.id}?accountId=${f.accountId}`,
+        created_at: f.created_at,
+        modified_at: f.modified_at,
+        account_email: f.account_email,
+      }))}
+    />
+  )
 }
