@@ -576,7 +576,7 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
               key={a.id}
               onClick={() => switchAccount(a.id)}
               className={cn(
-                "px-3.5 py-1.5 font-pixel text-[10px] transition-all border-2 truncate max-w-[160px] shrink-0",
+                "px-3.5 py-1.5 font-pixel text-[10px] transition-all border-2 truncate max-w-40 shrink-0",
                 currentAccountId === a.id
                   ? "border-neon bg-neon text-bg font-bold pixel-shadow-neon"
                   : "border-border text-text-muted hover:text-text hover:border-neon/40 bg-surface"
@@ -605,7 +605,7 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
               <button
                 onClick={() => navigateToBreadcrumb(i + 1)}
                 className={cn(
-                  "truncate max-w-[100px] sm:max-w-[160px] uppercase",
+                  "truncate max-w-25 sm:max-w-40 uppercase",
                   i === breadcrumbs.length - 1
                     ? "text-text font-bold underline"
                     : "text-neon/80 hover:underline"
@@ -829,7 +829,7 @@ const FileCard = memo(function FileCard({
           )}
 
           <div className="flex items-center gap-2 mt-1 sm:mt-1.5 flex-wrap">
-            <span className="font-pixel text-[9px] text-text-muted truncate max-w-[130px]">
+            <span className="font-pixel text-[9px] text-text-muted truncate max-w-32.5">
               {accountEmail ? accountEmail.split("@")[0] : label}
             </span>
             {!item.isFolder && (
@@ -918,11 +918,15 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
   const [targetAccountId, setTargetAccountId] = useState(currentAccountId || accounts[0]?.id || "")
   const [dragActive, setDragActive] = useState(false)
   const [uploading, setUploading] = useState(false)
-  const [progress, setProgress] = useState("")
+  const [progress, setProgress] = useState({ label: "", percent: 0 })
   const [error, setError] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const uploadOne = useCallback(async (file: File, parentId?: string) => {
+  const uploadOne = useCallback(async (
+    file: File,
+    parentId?: string,
+    onProgress?: (percent: number) => void
+  ) => {
     const formData = new FormData()
     formData.append("file", file)
     formData.append("mode", smartMode ? "smart" : "manual")
@@ -933,23 +937,43 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
       formData.append("parentId", parentId)
     }
 
-    const res = await fetch("/api/storage/upload", {
-      method: "POST",
-      body: formData,
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest()
+      xhr.open("POST", "/api/storage/upload")
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
+          onProgress?.(Math.round((event.loaded / event.total) * 100))
+        }
+      })
+      xhr.addEventListener("load", () => {
+        let data: { error?: string } & Record<string, unknown> = {}
+        try {
+          data = JSON.parse(xhr.responseText) as typeof data
+        } catch {
+          // Keep the generic HTTP error when the server returns non-JSON.
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
+          reject(new Error(data.error || `Upload failed (${xhr.status})`))
+          return
+        }
+        resolve(data)
+      })
+      xhr.addEventListener("error", () => reject(new Error("Upload failed: network error")))
+      xhr.addEventListener("abort", () => reject(new Error("Upload cancelled")))
+      xhr.send(formData)
     })
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}))
-      throw new Error(data.error || `Upload failed (${res.status})`)
-    }
-    return res.json()
   }, [smartMode, targetAccountId])
 
   const doUploadFile = useCallback(async (file: File) => {
     setUploading(true)
-    setProgress(file.name)
+    setProgress({ label: file.name, percent: 0 })
     setError("")
     try {
-      await uploadOne(file, currentFolderId === "root" ? undefined : currentFolderId)
+      await uploadOne(
+        file,
+        currentFolderId === "root" ? undefined : currentFolderId,
+        (percent) => setProgress({ label: file.name, percent })
+      )
       onUploaded()
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed")
@@ -1000,7 +1024,7 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
 
     try {
       let processed = 0
-      for (const entry of fileList) {
+      for (const [index, entry] of fileList.entries()) {
         let parentDriveId: string | undefined = currentFolderId === "root" ? undefined : currentFolderId
         let walking: string[] = []
         for (const dir of entry.parts) {
@@ -1011,8 +1035,17 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
             parentDriveId = driveFolderIds.get(walking.join("/"))!
           }
         }
-        setProgress(`${entry.file.name} (${++processed}/${fileList.length})`)
-        await uploadOne(entry.file, parentDriveId)
+        setProgress({
+          label: `${entry.file.name} (${processed + 1}/${fileList.length})`,
+          percent: Math.round((processed / fileList.length) * 100),
+        })
+        await uploadOne(entry.file, parentDriveId, (percent) => {
+          setProgress({
+            label: `${entry.file.name} (${index + 1}/${fileList.length})`,
+            percent: Math.round(((index + percent / 100) / fileList.length) * 100),
+          })
+        })
+        processed++
       }
       onUploaded()
     } catch (err) {
@@ -1153,7 +1186,16 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
           {uploading ? (
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="w-8 h-8 text-neon animate-spin" />
-              <p className="font-pixel text-xs text-text-muted leading-relaxed">UPLOADING {progress.toUpperCase()}...</p>
+              <p className="max-w-full truncate font-pixel text-xs text-text-muted leading-relaxed">
+                UPLOADING {progress.label.toUpperCase()}...
+              </p>
+              <div className="h-4 w-full border-2 border-border bg-bg p-0.5">
+                <div
+                  className="h-full bg-neon transition-[width] duration-150"
+                  style={{ width: `${progress.percent}%` }}
+                />
+              </div>
+              <p className="font-pixel text-[10px] text-neon">{progress.percent}% COMPLETE</p>
             </div>
           ) : kind === "folder" ? (
             <div className="flex flex-col items-center gap-3">

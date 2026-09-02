@@ -10,10 +10,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const body = await request.json()
-  const accountId = body.accountId as string | undefined
-  const name = body.name as string | undefined
-  const parentId = body.parentId as string | undefined
+  const contentType = request.headers.get("content-type") ?? ""
+  const body = contentType.includes("multipart/form-data")
+    ? Object.fromEntries(await request.formData())
+    : await request.json()
+  const accountId = typeof body.accountId === "string" ? body.accountId : undefined
+  const name = typeof body.name === "string" ? body.name : undefined
+  const parentId = typeof body.parentId === "string" ? body.parentId : undefined
 
   if (!accountId || !name) {
     return NextResponse.json({ error: "accountId and name are required" }, { status: 400 })
