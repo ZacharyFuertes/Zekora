@@ -8,11 +8,13 @@ interface VaultIconProps {
 export function VaultIcon({ className }: VaultIconProps) {
   return (
     <Image
-      src="/zekora.png"
+      src="/zekora-logo.png"
       alt="Zekora"
-      width={32}
-      height={32}
-      className={cn("w-8 h-8 rounded-lg", className)}
+      width={48}
+      height={48}
+      unoptimized
+      className={cn("w-10 h-10 object-contain", className)}
+      style={{ imageRendering: "pixelated" }}
     />
   )
 }

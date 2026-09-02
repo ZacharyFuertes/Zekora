@@ -27,9 +27,13 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Zekora",
     description: "A calm, cozy personal storage system",
     metadataBase: new URL(baseUrl),
-    icons: { icon: "/zekora.png" },
+    icons: {
+      icon: "/zekora-logo.png",
+      shortcut: "/zekora-logo.png",
+      apple: "/zekora-logo.png",
+    },
     openGraph: {
-      images: "/zekora.png",
+      images: "/zekora-logo.png",
     },
   }
 }

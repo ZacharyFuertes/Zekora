@@ -35,18 +35,22 @@ export function AuthCard({
       <div className="rounded-none border-2 border-neon bg-surface p-6 sm:p-8 pixel-shadow-neon">
         <div className="flex flex-col items-center text-center mb-6 sm:mb-8">
           {headerImage ? (
-            <img
-              src={headerImage}
-              alt={headerImageAlt}
-              className="mb-4 h-20 w-20 object-contain sm:h-24 sm:w-24"
-            />
+            <div className="flex w-full justify-center">
+              <img
+                src={headerImage}
+                alt={headerImageAlt}
+                className="mb-4 h-20 w-20 object-contain sm:h-24 sm:w-24"
+              />
+            </div>
           ) : (
-            <VaultIcon className="mb-4 h-16 w-16 sm:h-20 sm:w-20" />
+            <div className="flex w-full justify-center">
+              <VaultIcon className="mb-2 h-28 w-28 sm:h-32 sm:w-32" />
+            </div>
           )}
-          <h1 className="font-pixel text-base sm:text-lg font-bold text-text uppercase tracking-wider">
+          <h1 className="font-pixel text-sm sm:text-lg font-bold text-text uppercase tracking-wider">
             {title}
           </h1>
-          <p className="font-pixel text-[10px] text-text-muted mt-2 uppercase tracking-wide">
+          <p className="font-pixel text-[9px] sm:text-[10px] text-text-muted mt-2 uppercase tracking-wide">
             {subtitle}
           </p>
         </div>
