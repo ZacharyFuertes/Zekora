@@ -171,7 +171,7 @@ export function AssistantContent() {
           type="submit"
           disabled={loading || !prompt.trim()}
           aria-label="Send question"
-          className="grid h-13 w-13 shrink-0 place-items-center border-2 border-neon bg-neon text-bg shadow-[3px_3px_0_0_rgba(255,45,120,0.35)] transition-all hover:bg-neon-hover hover:-translate-x-px hover:-translate-y-px active:translate-x-0.5 active:translate-y-0.5 active:shadow-none disabled:cursor-not-allowed disabled:opacity-40"
+          className="grid h-13 w-13 shrink-0 place-items-center border-2 border-neon bg-neon text-bg shadow-[3px_3px_0_0_rgba(168,85,247,0.35)] transition-all hover:bg-neon-hover hover:-translate-x-px hover:-translate-y-px active:translate-x-0.5 active:translate-y-0.5 active:shadow-none disabled:cursor-not-allowed disabled:opacity-40"
         >
           <Send className="h-4 w-4" />
         </button>

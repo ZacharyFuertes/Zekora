@@ -111,7 +111,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
     <>
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 h-16 border-b-2 border-border shrink-0">
-        <VaultIcon />
+        <VaultIcon className="h-14 w-16" />
         <span className="font-pixel text-base text-neon tracking-wider">ZEKORA</span>
         {onClose && (
           <button

@@ -5,19 +5,19 @@
   --color-surface: #16161f;
   --color-surface-hover: #1e1e2c;
   --color-border: #2a2a3a;
-  --color-primary: #a78bfa;
-  --color-primary-hover: #8b5cf6;
-  --color-primary-muted: rgba(167, 139, 250, 0.1);
+  --color-primary: #a970ff;
+  --color-primary-hover: #c28cff;
+  --color-primary-muted: rgba(169, 112, 255, 0.12);
 
-  /* Gengar neon pink accent */
-  --color-neon: #ff2d78;
-  --color-neon-hover: #ff5c95;
-  --color-neon-muted: rgba(255, 45, 120, 0.12);
+  /* Violet emblem accent */
+  --color-neon: #a855f7;
+  --color-neon-hover: #c084fc;
+  --color-neon-muted: rgba(168, 85, 247, 0.14);
 
-  /* Muted crimson accent */
-  --color-crimson: #a73248;
-  --color-crimson-hover: #c64860;
-  --color-crimson-muted: rgba(167, 50, 72, 0.14);
+  /* Deep violet secondary accent */
+  --color-crimson: #6842a8;
+  --color-crimson-hover: #8b5cf6;
+  --color-crimson-muted: rgba(104, 66, 168, 0.16);
 
   --color-secondary: #f59e0b;
   --color-secondary-muted: rgba(245, 158, 11, 0.1);
@@ -40,7 +40,7 @@
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #ff2d7866 transparent;
+  scrollbar-color: #a855f766 transparent;
   scrollbar-gutter: stable;
 }
 
@@ -50,11 +50,11 @@
 }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #ff2d7844;
+  background: #a855f744;
   border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff2d78aa;
+  background: #a855f7aa;
 }
 
 body {
@@ -72,10 +72,10 @@ body {
 
 /* ── Pixel shadow utilities ── */
 .pixel-shadow-neon {
-  box-shadow: 3px 3px 0 0 rgba(255, 45, 120, 0.45);
+  box-shadow: 3px 3px 0 0 rgba(168, 85, 247, 0.45);
 }
 .pixel-shadow-crimson {
-  box-shadow: 3px 3px 0 0 rgba(167, 50, 72, 0.45);
+  box-shadow: 3px 3px 0 0 rgba(104, 66, 168, 0.45);
 }
 .pixel-shadow-dark {
   box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.5);
