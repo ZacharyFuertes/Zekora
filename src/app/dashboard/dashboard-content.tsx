@@ -25,8 +25,22 @@ export function DashboardContent({ files: initialFiles }: DashboardContentProps)
       body: formData,
     })
 
-    const data = await res.json()
-    if (!res.ok) throw new Error(data.error ?? "Upload failed")
+    let data: {
+      error?: string
+      file?: { id: string; name: string; mimeType: string; size: number; createdTime: string; modifiedTime: string }
+      accountId?: string
+    } = {}
+    try {
+      data = await res.json()
+    } catch {
+      // non-JSON / empty response
+    }
+    if (!res.ok) {
+      throw new Error(data.error ?? `Upload failed (${res.status})`)
+    }
+    if (!data.file) {
+      throw new Error("Upload failed: no file returned")
+    }
 
     const uploaded: FileMetadata = {
       id: data.file.id,

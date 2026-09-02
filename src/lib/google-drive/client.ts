@@ -149,28 +149,28 @@ export async function getDriveConnection(
       const metadata: Record<string, unknown> = { name, mimeType: mimeType || "application/octet-stream" }
       if (parentId) metadata.parents = [parentId]
 
-      const boundary = `ZaekoraBoundary${Date.now()}`
-      const parts: Buffer[] = []
-      parts.push(Buffer.from(
-        `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n` +
-        `${JSON.stringify(metadata)}\r\n`
-      ))
-      parts.push(Buffer.from(
-        `--${boundary}\r\nContent-Type: ${mimeType || "application/octet-stream"}\r\n` +
+      // Use a distinctive, safe boundary (Drive rejects collisions in body bytes).
+      const boundary = `Zaekora${Date.now().toString(36)}${Math.random().toString(36).slice(2, 10)}`
+
+      const header = Buffer.from(
+        `--${boundary}\r\n` +
+        `Content-Type: application/json; charset=UTF-8\r\n\r\n` +
+        `${JSON.stringify(metadata)}\r\n` +
+        `--${boundary}\r\n` +
+        `Content-Type: ${mimeType || "application/octet-stream"}\r\n` +
         `Content-Transfer-Encoding: binary\r\n\r\n`
-      ))
-      parts.push(body)
-      parts.push(Buffer.from(`\r\n--${boundary}--`))
+      )
+      const footer = Buffer.from(`\r\n--${boundary}--\r\n`)
 
       const res = await driveFetch(
         `/files?uploadType=multipart&fields=id,name,mimeType,size,createdTime,modifiedTime,parents`,
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${token}`,
+            "Authorization": `Bearer ${token}`,
             "Content-Type": `multipart/related; boundary=${boundary}`,
           },
-          body: Buffer.concat(parts),
+          body: Buffer.concat([header, body, footer]),
         }
       )
       const file = await res.json()
