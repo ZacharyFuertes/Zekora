@@ -19,7 +19,7 @@ const AVATAR_PROFILES: AvatarProfile[] = [
   { id: "black-guy", name: "Black Guy", image: "/black-man.svg" },
   { id: "asian-guy", name: "Asian Guy", image: "/asian-guy.svg" },
   { id: "american-guy", name: "American Guy", image: "/american-guy.svg" },
-  { id: "jew-guy", name: "Jew Guy", image: "/jew-guy.svg" },
+  { id: "jew-guy", name: "Jewish Guy", image: "/jew-guy.svg" },
 ]
 
 export function AssistantContent() {
@@ -45,6 +45,7 @@ export function AssistantContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          profileName: AVATAR_PROFILES.find((profile) => profile.id === selectedProfileId)?.name ?? "Black Guy",
           messages: nextMessages.map(({ role, content: messageContent }) => ({
             role,
             content: messageContent,
@@ -64,7 +65,6 @@ export function AssistantContent() {
   return (
     <section className="mx-auto w-full max-w-4xl space-y-5">
       <header className="relative overflow-hidden border-2 border-neon/50 bg-surface px-5 py-5 pixel-shadow-neon sm:px-7">
-        <div className="absolute right-0 top-0 h-16 w-16 border-b-2 border-l-2 border-neon/20" />
         <div className="relative flex items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-3">
@@ -72,7 +72,7 @@ export function AssistantContent() {
                 <img src="/gengar-bot.svg" alt="gengar" className="h-full w-full object-contain" />
               </span>
               <div>
-                <h1 className="font-pixel text-xl text-text">Gengar</h1>
+                <h1 className="font-pixel text-xl text-text">Wild Racist Gengar</h1>
                 <p className="mt-1 font-pixel text-[9px] uppercase tracking-wider text-secondary">Came from the hood. Keep it respectful.</p>
               </div>
             </div>
@@ -87,7 +87,7 @@ export function AssistantContent() {
       <div className="flex flex-wrap items-center justify-between gap-3 border border-border bg-bg p-3">
         <div className="flex items-center gap-2">
           <UserRound className="h-4 w-4 text-neon" />
-          <span className="font-pixel text-[10px] uppercase tracking-widest text-text-muted">Your profile</span>
+          <span className="font-pixel text-[10px] uppercase tracking-widest text-text-muted">Difficulties: </span>
         </div>
         <div className="flex flex-wrap gap-2">
           {AVATAR_PROFILES.map((profile) => (
