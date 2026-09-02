@@ -15,6 +15,7 @@ import {
   LogOut,
   X,
   HardDrive,
+  Bot,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { VaultIcon } from "@/components/ui/vault-icon"
@@ -31,6 +32,7 @@ interface NavItem {
 const mainNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutGrid, matchExact: true },
   { label: "Files", href: "/dashboard/files", icon: Folder },
+  { label: "Assistant", href: "/dashboard/assistant", icon: Bot },
   { label: "Passwords", href: "#", icon: Lock, disabled: true },
   { label: "Notes", href: "#", icon: FileText, disabled: true },
   { label: "Access Logs", href: "#", icon: ScrollText, disabled: true },
@@ -58,7 +60,7 @@ function NavLink({
   const inner = (
     <span
       className={cn(
-        "relative flex items-center gap-3 px-3 py-2.5 rounded-sm font-pixel text-xs transition-all border border-transparent",
+        "relative flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-sm font-pixel text-xs transition-all border border-transparent",
         isActive
           ? "bg-neon-muted text-neon border-neon/40 pixel-shadow-neon"
           : item.disabled
@@ -152,7 +154,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
   const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 768px)")
+    const mq = window.matchMedia("(max-width: 1100px)")
     setIsMobile(mq.matches)
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
     mq.addEventListener("change", handler)
@@ -177,7 +179,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
-              className="fixed left-0 top-0 bottom-0 w-64 max-w-[80vw] flex flex-col border-r-2 border-border bg-surface z-50 pixel-shadow-dark"
+              className="pointer-events-auto fixed left-0 top-0 bottom-0 z-60 flex w-64 max-w-[80vw] flex-col border-r-2 border-border bg-surface pixel-shadow-dark"
             >
               <SidebarContent onClose={onMobileClose} />
             </motion.aside>
@@ -189,7 +191,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
 
   /* ── Desktop sidebar ── */
   return (
-    <aside className="hidden md:flex flex-col w-60 shrink-0 border-r-2 border-border bg-surface h-dvh sticky top-0 z-30">
+    <aside className="hidden min-[1101px]:flex flex-col w-60 shrink-0 border-r-2 border-border bg-surface h-dvh sticky top-0 z-30">
       <SidebarContent />
     </aside>
   )

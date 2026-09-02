@@ -35,8 +35,10 @@ export function Header({ onMenuClick }: HeaderProps) {
     <header className="h-16 border-b-2 border-border flex items-center justify-between px-4 sm:px-6 gap-4 bg-surface sticky top-0 z-30">
       {/* Mobile menu trigger */}
       <button
+        type="button"
         onClick={onMenuClick}
-        className="md:hidden p-2 rounded-none border border-border hover:bg-surface-hover text-text-muted transition-colors"
+        aria-label="Open navigation"
+        className="relative z-50 min-[1101px]:hidden grid h-10 w-10 place-items-center border-2 border-border bg-bg text-text-muted shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] transition-all hover:border-neon hover:bg-neon-muted hover:text-neon active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
       >
         <Menu className="w-5 h-5" />
       </button>
@@ -61,7 +63,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           <div className="w-7 h-7 rounded-none bg-neon-muted border border-neon/40 flex items-center justify-center shrink-0">
             <User className="w-3.5 h-3.5 text-neon" />
           </div>
-          <span className="font-pixel text-xs text-text hidden sm:block truncate max-w-[180px]">
+          <span className="font-pixel text-xs text-text hidden sm:block truncate max-w-45">
             {displayName}
           </span>
           <ChevronDown
