@@ -47,12 +47,14 @@ export function AssistantContent() {
         <div className="absolute right-0 top-0 h-16 w-16 border-b-2 border-l-2 border-neon/20" />
         <div className="relative flex items-start justify-between gap-4">
           <div>
-            <p className="mb-2 font-pixel text-[10px] uppercase tracking-[0.2em] text-neon">ZKR // INTELLIGENCE NODE</p>
             <div className="flex items-center gap-3">
               <span className="grid h-12 w-12 shrink-0 place-items-center border border-neon bg-neon-muted p-0.5">
                 <img src="/gengar-bot.svg" alt="gengar" className="h-full w-full object-contain" />
               </span>
-              <h1 className="font-pixel text-xl text-text">Wild Racist Gengar</h1>
+              <div>
+                <h1 className="font-pixel text-xl text-text">Wild Racist Gengar</h1>
+                <p className="mt-1 font-pixel text-[9px] uppercase tracking-wider text-secondary">Came from the hood. Keep it respectful.</p>
+              </div>
             </div>
           </div>
           <div className="hidden items-center gap-2 border border-secondary/40 bg-secondary-muted px-2 py-1 sm:flex">
@@ -60,9 +62,6 @@ export function AssistantContent() {
             <span className="font-pixel text-[9px] uppercase text-secondary">Online</span>
           </div>
         </div>
-        <p className="relative mt-4 max-w-xl text-sm leading-6 text-text-muted">
-          Ask about your notes, collections, and tags. This preview is read-only.
-        </p>
       </header>
 
       <div className="border-2 border-border bg-surface pixel-shadow-dark">
@@ -77,7 +76,7 @@ export function AssistantContent() {
           {messages.map((message, index) => (
             <div key={`${message.role}-${index}`} className={message.role === "user" ? "ml-4 flex flex-col items-end sm:ml-16" : "mr-4 sm:mr-16"}>
               <p className="mb-1 font-pixel text-[10px] uppercase tracking-widest text-text-muted">
-                {message.role === "user" ? "Black Guy" : "Gengar"}
+                {message.role === "user" ? "Black Guy" : "Wild Racist Gengar"}
               </p>
               <div className={message.role === "user" ? "flex max-w-[85%] justify-end" : "flex max-w-[90%] items-start gap-2"}>
                 {message.role === "assistant" && (
@@ -98,7 +97,12 @@ export function AssistantContent() {
               </div>
             </div>
           ))}
-          {loading && <p className="font-pixel text-[10px] uppercase tracking-widest text-secondary">Scanning vault...</p>}
+          {loading && (
+            <div className="mr-4 flex items-center gap-2 sm:mr-16" aria-live="polite">
+              <img src="/gengar-bot.svg" alt="Gengar is typing" className="h-12 w-12 shrink-0 animate-gengar-shake object-contain" />
+              <p className="font-pixel text-[10px] uppercase tracking-widest text-secondary">Racist Gengar is typing</p>
+            </div>
+          )}
         </div>
       </div>
 

@@ -113,6 +113,16 @@ body {
   100% { background-position: 200% 0; }
 }
 
+@keyframes gengar-shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(-2px) rotate(-2deg); }
+  75% { transform: translateX(2px) rotate(2deg); }
+}
+
+.animate-gengar-shake {
+  animation: gengar-shake 0.35s steps(2, end) infinite;
+}
+
 .skeleton {
   background: linear-gradient(90deg, var(--color-surface) 25%, var(--color-surface-hover) 50%, var(--color-surface) 75%);
   background-size: 200% 100%;
