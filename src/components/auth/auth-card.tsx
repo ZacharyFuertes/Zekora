@@ -8,9 +8,9 @@ interface AuthCardProps {
   title: string
   subtitle: string
   children: React.ReactNode
-  footerText: string
-  footerLink: string
-  footerLinkText: string
+  footerText?: string
+  footerLink?: string
+  footerLinkText?: string
 }
 
 export function AuthCard({
@@ -39,15 +39,17 @@ export function AuthCard({
           </p>
         </div>
         {children}
-        <p className="text-center font-pixel text-[10px] text-text-muted mt-6 uppercase tracking-wide">
-          {footerText}{" "}
-          <Link
-            href={footerLink}
-            className="text-neon hover:underline font-bold"
-          >
-            {footerLinkText}
-          </Link>
-        </p>
+        {footerText && footerLink && footerLinkText && (
+          <p className="text-center font-pixel text-[10px] text-text-muted mt-6 uppercase tracking-wide">
+            {footerText}{" "}
+            <Link
+              href={footerLink}
+              className="text-neon hover:underline font-bold"
+            >
+              {footerLinkText}
+            </Link>
+          </p>
+        )}
       </div>
     </motion.div>
   )

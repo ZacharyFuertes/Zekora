@@ -14,9 +14,6 @@ export default function LoginPage() {
       <AuthCard
         title="Welcome back"
         subtitle="Sign in to your vault"
-        footerText="Don't have an account?"
-        footerLink="/signup"
-        footerLinkText="Sign up"
       >
         <AuthForm
           mode="login"
