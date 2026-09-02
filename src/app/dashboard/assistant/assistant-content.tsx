@@ -1,16 +1,31 @@
 "use client"
 
 import { FormEvent, useState } from "react"
-import { Database, Send } from "lucide-react"
+import { Database, Send, UserRound } from "lucide-react"
 
 interface Message {
   role: "user" | "assistant"
   content: string
+  profileId?: string
 }
+
+interface AvatarProfile {
+  id: string
+  name: string
+  image: string
+}
+
+const AVATAR_PROFILES: AvatarProfile[] = [
+  { id: "black-guy", name: "Black Guy", image: "/black-man.svg" },
+  { id: "asian-guy", name: "Asian Guy", image: "/asian-guy.svg" },
+  { id: "american-guy", name: "American Guy", image: "/american-guy.svg" },
+  { id: "jew-guy", name: "Jew Guy", image: "/jew-guy.svg" },
+]
 
 export function AssistantContent() {
   const [messages, setMessages] = useState<Message[]>([])
   const [prompt, setPrompt] = useState("")
+  const [selectedProfileId, setSelectedProfileId] = useState("black-guy")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -19,7 +34,7 @@ export function AssistantContent() {
     const content = prompt.trim()
     if (!content || loading) return
 
-    const nextMessages = [...messages, { role: "user" as const, content }]
+    const nextMessages = [...messages, { role: "user" as const, content, profileId: selectedProfileId }]
     setMessages(nextMessages)
     setPrompt("")
     setError("")
@@ -29,7 +44,12 @@ export function AssistantContent() {
       const response = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: nextMessages }),
+        body: JSON.stringify({
+          messages: nextMessages.map(({ role, content: messageContent }) => ({
+            role,
+            content: messageContent,
+          })),
+        }),
       })
       const data = await response.json() as { answer?: string; error?: string }
       if (!response.ok) throw new Error(data.error ?? "Assistant request failed")
@@ -52,7 +72,7 @@ export function AssistantContent() {
                 <img src="/gengar-bot.svg" alt="gengar" className="h-full w-full object-contain" />
               </span>
               <div>
-                <h1 className="font-pixel text-xl text-text">Wild Racist Gengar</h1>
+                <h1 className="font-pixel text-xl text-text">Gengar</h1>
                 <p className="mt-1 font-pixel text-[9px] uppercase tracking-wider text-secondary">Came from the hood. Keep it respectful.</p>
               </div>
             </div>
@@ -63,6 +83,30 @@ export function AssistantContent() {
           </div>
         </div>
       </header>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 border border-border bg-bg p-3">
+        <div className="flex items-center gap-2">
+          <UserRound className="h-4 w-4 text-neon" />
+          <span className="font-pixel text-[10px] uppercase tracking-widest text-text-muted">Your profile</span>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {AVATAR_PROFILES.map((profile) => (
+            <button
+              key={profile.id}
+              type="button"
+              onClick={() => setSelectedProfileId(profile.id)}
+              aria-label={`Choose ${profile.name} avatar`}
+              aria-pressed={selectedProfileId === profile.id}
+              className={selectedProfileId === profile.id
+                ? "flex items-center gap-2 border-2 border-neon bg-neon-muted px-2 py-1.5 text-neon pixel-shadow-neon"
+                : "flex items-center gap-2 border border-border bg-surface px-2 py-1.5 text-text-muted hover:border-neon/50 hover:text-text"}
+            >
+              <img src={profile.image} alt="" className="h-8 w-8 shrink-0 object-contain" />
+              <span className="font-pixel text-[10px] uppercase">{profile.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
 
       <div className="border-2 border-border bg-surface pixel-shadow-dark">
         <div className="flex items-center justify-between border-b border-border bg-bg px-4 py-2">
@@ -76,7 +120,9 @@ export function AssistantContent() {
           {messages.map((message, index) => (
             <div key={`${message.role}-${index}`} className={message.role === "user" ? "ml-4 flex flex-col items-end sm:ml-16" : "mr-4 sm:mr-16"}>
               <p className="mb-1 font-pixel text-[10px] uppercase tracking-widest text-text-muted">
-                {message.role === "user" ? "Black Guy" : "Wild Racist Gengar"}
+                {message.role === "user"
+                  ? AVATAR_PROFILES.find((profile) => profile.id === message.profileId)?.name ?? "Black Guy"
+                  : "Gengar"}
               </p>
               <div className={message.role === "user" ? "flex max-w-[85%] justify-end" : "flex max-w-[90%] items-start gap-2"}>
                 {message.role === "assistant" && (
@@ -87,7 +133,11 @@ export function AssistantContent() {
                     <p className="whitespace-pre-wrap border border-neon/50 bg-neon-muted p-3 font-pixel text-xs leading-6 text-text pixel-shadow-neon">
                       {message.content}
                     </p>
-                    <img src="/black-man.svg" alt="Black Guy" className="h-10 w-10 shrink-0 object-contain" />
+                    <img
+                      src={AVATAR_PROFILES.find((profile) => profile.id === message.profileId)?.image ?? "/black-man.svg"}
+                      alt={AVATAR_PROFILES.find((profile) => profile.id === message.profileId)?.name ?? "Black Guy"}
+                      className="h-10 w-10 shrink-0 object-contain"
+                    />
                   </div>
                 ) : (
                   <p className="whitespace-pre-wrap border border-border bg-bg p-3 font-pixel text-xs leading-6 text-text">
