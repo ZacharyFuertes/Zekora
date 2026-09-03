@@ -58,7 +58,13 @@
 }
 
 body {
-  background: var(--color-bg);
+  background-color: #090914;
+  background-image:
+    linear-gradient(rgba(168, 85, 247, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(168, 85, 247, 0.045) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(20, 20, 38, 0.94), rgba(9, 9, 20, 0.98));
+  background-size: 24px 24px, 24px 24px, 100% 100%;
+  background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
 }
@@ -120,7 +126,29 @@ body {
 }
 
 .animate-gengar-shake {
-  animation: gengar-shake 0.35s steps(2, end) infinite;
+  animation: gengar-shake 0.55s ease-in-out infinite;
+}
+
+@keyframes gengar-arrive {
+  0% { opacity: 0; transform: translateY(16px) scale(0.86); }
+  70% { opacity: 1; transform: translateY(-4px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes gengar-click {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.08) rotate(-4deg); }
+  50% { transform: scale(0.94) rotate(4deg); }
+  75% { transform: scale(1.04) rotate(-2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.animate-gengar-arrive {
+  animation: gengar-arrive 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-gengar-click {
+  animation: gengar-click 0.5s steps(4, end) both;
 }
 
 .skeleton {

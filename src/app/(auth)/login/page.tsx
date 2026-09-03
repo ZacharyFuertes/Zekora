@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { AuthCard } from "@/components/auth/auth-card"
 import { AuthForm } from "@/components/auth/auth-form"
@@ -7,6 +8,13 @@ import { BetaSignupForm } from "@/components/auth/beta-signup-form"
 
 export default function LoginPage() {
   const supabase = createClient()
+  const [gengarClicked, setGengarClicked] = useState(false)
+
+  function handleGengarClick() {
+    setGengarClicked(false)
+    window.setTimeout(() => setGengarClicked(true), 20)
+    window.setTimeout(() => setGengarClicked(false), 520)
+  }
 
   return (
     <div className="min-h-dvh px-4 py-8 sm:flex sm:items-center sm:justify-center sm:py-12">
@@ -28,17 +36,24 @@ export default function LoginPage() {
         </AuthCard>
 
         <aside className="flex w-full flex-col items-center text-center lg:pt-4">
-          <div className="relative flex h-56 w-full items-end justify-center">
-            <div className="absolute bottom-3 h-3 w-32 rounded-[50%] bg-black/40 blur-[2px]" />
-            <img
-              src="/gengar-maintenance.svg"
-              alt="Gengar maintenance mode"
-              className="relative h-52 w-52 animate-gengar-shake object-contain"
-            />
-          </div>
-          <p className="relative mt-2 w-full rounded-2xl border-2 border-neon bg-surface px-4 py-3 font-pixel text-[10px] uppercase leading-relaxed tracking-wide text-secondary shadow-[3px_3px_0_0_rgba(168,85,247,0.35)] before:absolute before:-top-2 before:left-1/2 before:h-3 before:w-3 before:-translate-x-1/2 before:rotate-45 before:border-l-2 before:border-t-2 before:border-neon before:bg-surface">
+          <p className="relative z-10 w-full rounded-2xl border-2 border-neon bg-surface px-4 py-3 font-pixel text-[10px] uppercase leading-relaxed tracking-wide text-secondary shadow-[3px_3px_0_0_rgba(168,85,247,0.35)] after:absolute after:-bottom-2 after:left-1/2 after:h-3 after:w-3 after:-translate-x-1/2 after:rotate-45 after:border-b-2 after:border-r-2 after:border-neon after:bg-surface">
             This Gengar is still finishing this project. Please be kind to him
           </p>
+          <div className="relative flex h-56 w-full items-end justify-center">
+            <div className="absolute bottom-3 h-3 w-32 rounded-[50%] bg-black/40 blur-[2px]" />
+            <button
+              type="button"
+              onClick={handleGengarClick}
+              aria-label="Pat Gengar"
+              className="relative cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-secondary animate-gengar-shake"
+            >
+              <img
+                src="/gengar-maintenance.svg"
+                alt="Gengar maintenance mode"
+                className={`relative h-52 w-52 object-contain animate-gengar-arrive ${gengarClicked ? "animate-gengar-click" : ""}`}
+              />
+            </button>
+          </div>
           <BetaSignupForm />
         </aside>
       </div>
