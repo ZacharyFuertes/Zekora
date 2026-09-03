@@ -32,7 +32,7 @@ export function AuthCard({
       transition={{ duration: 0.4, ease: "easeOut" }}
       className="w-full max-w-md px-4"
     >
-      <div className="rounded-none border-2 border-neon bg-surface p-6 sm:p-8 pixel-shadow-neon">
+      <div className="rounded-2xl border-2 border-neon bg-surface p-6 shadow-[0_0_28px_rgba(168,85,247,0.12),3px_3px_0_0_rgba(168,85,247,0.45)] sm:rounded-3xl sm:p-8">
         <div className="flex flex-col items-center text-center mb-6 sm:mb-8">
           {headerImage ? (
             <div className="flex w-full justify-center">
