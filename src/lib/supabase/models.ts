@@ -10,6 +10,101 @@ function raise(error: { message: string } | null, fallback = "Database error") {
   throw new Error(error?.message ?? fallback)
 }
 
+export interface PasswordEntryRow {
+  id: string
+  user_id: string
+  title: string
+  username: string
+  url: string
+  encrypted_password: string
+  created_at: string
+  updated_at: string
+}
+
+export interface ActivityEventRow {
+  id: string
+  user_id: string
+  event_type: string
+  resource_type: string
+  resource_name: string
+  metadata: Record<string, unknown>
+  created_at: string
+}
+
+export async function getPasswordEntries(userId: string) {
+  const sb = await db()
+  const { data, error } = await sb
+    .from("password_entries")
+    .select("id, user_id, title, username, url, created_at, updated_at")
+    .eq("user_id", userId)
+    .order("updated_at", { ascending: false })
+  if (error) raise(error)
+  return (data ?? []) as Omit<PasswordEntryRow, "encrypted_password">[]
+}
+
+export async function getPasswordEntry(userId: string, id: string) {
+  const sb = await db()
+  const { data, error } = await sb
+    .from("password_entries")
+    .select("*")
+    .eq("user_id", userId)
+    .eq("id", id)
+    .maybeSingle()
+  if (error) raise(error)
+  return data as PasswordEntryRow | null
+}
+
+export async function createPasswordEntry(data: {
+  user_id: string
+  title: string
+  username: string
+  url: string
+  encrypted_password: string
+}) {
+  const sb = await db()
+  const { data: row, error } = await sb.from("password_entries").insert(data).select().single()
+  if (error) raise(error)
+  return row as PasswordEntryRow
+}
+
+export async function updatePasswordEntry(id: string, userId: string, data: Partial<Pick<PasswordEntryRow, "title" | "username" | "url" | "encrypted_password">>) {
+  const sb = await db()
+  const { data: row, error } = await sb
+    .from("password_entries")
+    .update({ ...data, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .eq("user_id", userId)
+    .select()
+    .maybeSingle()
+  if (error) raise(error)
+  return row as PasswordEntryRow | null
+}
+
+export async function deletePasswordEntry(id: string, userId: string) {
+  const sb = await db()
+  const { error } = await sb.from("password_entries").delete().eq("id", id).eq("user_id", userId)
+  if (error) raise(error)
+}
+
+export async function createActivityEvent(data: Omit<ActivityEventRow, "id" | "created_at">) {
+  const sb = await db()
+  const { error } = await sb.from("activity_events").insert(data)
+  if (error) raise(error)
+}
+
+export async function getActivityEvents(userId: string, limit = 50) {
+  const sb = await db()
+  const { data, error } = await sb
+    .from("activity_events")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(limit)
+  if (error?.code === "PGRST205" || error?.code === "42P01") return []
+  if (error) raise(error)
+  return (data ?? []) as ActivityEventRow[]
+}
+
 // ============================ notes ============================
 
 export interface NoteRow {

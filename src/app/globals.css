@@ -129,6 +129,15 @@ body {
   animation: gengar-shake 0.55s ease-in-out infinite;
 }
 
+@keyframes hidden-vault-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-hidden-vault-float {
+  animation: hidden-vault-float 2.8s ease-in-out infinite;
+}
+
 @keyframes gengar-arrive {
   0% { opacity: 0; transform: translateY(16px) scale(0.86); }
   70% { opacity: 1; transform: translateY(-4px) scale(1.02); }

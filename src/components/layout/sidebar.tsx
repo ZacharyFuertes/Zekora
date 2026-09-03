@@ -9,17 +9,14 @@ import {
   Folder,
   Lock,
   FileText,
-  ScrollText,
+  LockKeyhole,
   Activity,
-  Settings,
-  LogOut,
   X,
   HardDrive,
   Bot,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { VaultIcon } from "@/components/ui/vault-icon"
-import { createClient } from "@/lib/supabase/client"
 
 interface NavItem {
   label: string
@@ -33,10 +30,10 @@ const mainNavItems: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutGrid, matchExact: true },
   { label: "Files", href: "/dashboard/files", icon: Folder },
   { label: "Assistant", href: "/dashboard/assistant", icon: Bot },
-  { label: "Passwords", href: "#", icon: Lock, disabled: true },
-  { label: "Notes", href: "#", icon: FileText, disabled: true },
-  { label: "Access Logs", href: "#", icon: ScrollText, disabled: true },
-  { label: "Activity", href: "#", icon: Activity, disabled: true },
+  { label: "Passwords", href: "/dashboard/passwords", icon: Lock },
+  { label: "Notes", href: "/dashboard/notes", icon: FileText },
+  { label: "Hidden Vault", href: "/dashboard/access-logs", icon: LockKeyhole },
+  { label: "Activity", href: "/dashboard/activity", icon: Activity },
 ]
 
 const bottomNavItems: NavItem[] = [
@@ -92,7 +89,6 @@ function NavLink({
 
 function SidebarContent({ onClose }: { onClose?: () => void }) {
   const pathname = usePathname()
-  const supabase = createClient()
 
   function isItemActive(item: NavItem): boolean {
     if (item.disabled) return false
@@ -102,16 +98,11 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
     return pathname === item.href || (item.href !== "/dashboard" && pathname.startsWith(item.href))
   }
 
-  async function handleSignOut() {
-    await supabase.auth.signOut()
-    window.location.href = "/login"
-  }
-
   return (
     <>
       {/* Logo */}
       <div className="flex items-center gap-3 px-5 h-16 border-b-2 border-border shrink-0">
-        <VaultIcon className="h-14 w-16" />
+        <VaultIcon className="h-14 w-16 lg:h-16 lg:w-20" />
         <span className="font-pixel text-base text-neon tracking-wider">ZEKORA</span>
         {onClose && (
           <button
@@ -151,11 +142,12 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
 }
 
 export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia("(max-width: 1100px)").matches
+  )
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 1100px)")
-    setIsMobile(mq.matches)
     const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
     mq.addEventListener("change", handler)
     return () => mq.removeEventListener("change", handler)
