@@ -5,42 +5,45 @@
   --color-surface: #16161f;
   --color-surface-hover: #1e1e2c;
   --color-border: #2a2a3a;
-  --color-primary: #a970ff;
-  --color-primary-hover: #c28cff;
-  --color-primary-muted: rgba(169, 112, 255, 0.12);
+  --color-primary: #2b0057;
+  --color-primary-hover: #2b0057;
+  --color-primary-muted: rgba(43, 0, 87, 0.12);
 
   /* Violet emblem accent */
-  --color-neon: #a855f7;
-  --color-neon-hover: #c084fc;
-  --color-neon-muted: rgba(168, 85, 247, 0.14);
+  --color-neon: #2b0057;
+  --color-neon-hover: #2b0057;
+  --color-neon-muted: rgba(43, 0, 87, 0.14);
 
   /* Deep violet secondary accent */
-  --color-crimson: #6842a8;
-  --color-crimson-hover: #8b5cf6;
-  --color-crimson-muted: rgba(104, 66, 168, 0.16);
+  --color-crimson: #2b0057;
+  --color-crimson-hover: #2b0057;
+  --color-crimson-muted: rgba(43, 0, 87, 0.16);
 
-  --color-secondary: #f59e0b;
-  --color-secondary-muted: rgba(245, 158, 11, 0.1);
+  /* Orange accent, kept alongside the violet palette */
+  --color-accent: #dd2c00;
+  --color-accent-muted: rgba(221, 44, 0, 0.16);
+  --color-secondary: var(--color-accent);
+  --color-secondary-muted: var(--color-accent-muted);
   --color-text: #e4e4e7;
   --color-text-muted: #7c7c8a;
   --color-danger: #f87171;
-  --color-danger-muted: rgba(248, 113, 113, 0.1);
+  --color-danger-muted: rgba(221, 44, 0, 0.16);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-pixel: var(--font-pixel);
 
   /* ── Pixel art: globally reduce border-radius for blocky feel ── */
-  --radius-sm: 2px;
-  --radius-md: 2px;
-  --radius-lg: 4px;
-  --radius-xl: 4px;
-  --radius-2xl: 6px;
-  --radius-3xl: 6px;
+  --radius-sm: 0px;
+  --radius-md: 1px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+  --radius-2xl: 3px;
+  --radius-3xl: 4px;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #a855f766 transparent;
+  scrollbar-color: #2b005766 transparent;
   scrollbar-gutter: stable;
 }
 
@@ -50,23 +53,38 @@
 }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: #a855f744;
+  background: #2b005744;
   border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a855f7aa;
+  background: #2b0057aa;
 }
 
 body {
   background-color: #090914;
   background-image:
-    linear-gradient(rgba(168, 85, 247, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(168, 85, 247, 0.045) 1px, transparent 1px),
+    linear-gradient(rgba(221, 44, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(221, 44, 0, 0.05) 1px, transparent 1px),
     linear-gradient(135deg, rgba(20, 20, 38, 0.94), rgba(9, 9, 20, 0.98));
-  background-size: 24px 24px, 24px 24px, 100% 100%;
+  background-size: 20px 20px, 20px 20px, 100% 100%;
   background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
+  image-rendering: pixelated;
+}
+
+.pixel-vault-grid {
+  background-image:
+    linear-gradient(rgba(221, 44, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(221, 44, 0, 0.06) 1px, transparent 1px);
+  background-size: 16px 16px;
+  image-rendering: pixelated;
+}
+
+.pixel-panel {
+  border: 2px solid var(--color-border);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.42);
+  image-rendering: pixelated;
 }
 
 /* ── Font utilities ── */
@@ -78,10 +96,10 @@ body {
 
 /* ── Pixel shadow utilities ── */
 .pixel-shadow-neon {
-  box-shadow: 3px 3px 0 0 rgba(168, 85, 247, 0.45);
+  box-shadow: 3px 3px 0 0 rgba(43, 0, 87, 0.45);
 }
 .pixel-shadow-crimson {
-  box-shadow: 3px 3px 0 0 rgba(104, 66, 168, 0.45);
+  box-shadow: 3px 3px 0 0 rgba(43, 0, 87, 0.45);
 }
 .pixel-shadow-dark {
   box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.5);
@@ -109,8 +127,8 @@ body {
     0deg,
     transparent 0px,
     transparent 3px,
-    rgba(0, 0, 0, 0.05) 3px,
-    rgba(0, 0, 0, 0.05) 4px
+    rgba(0, 0, 0, 0.07) 3px,
+    rgba(0, 0, 0, 0.07) 4px
   );
 }
 

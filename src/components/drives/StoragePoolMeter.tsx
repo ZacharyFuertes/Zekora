@@ -55,7 +55,7 @@ export function StoragePoolMeter({ pool, accountCount }: StoragePoolMeterProps) 
         <div className="text-right">
           <p className={cn(
             "font-pixel text-base sm:text-lg font-bold",
-            usedPercent > 90 ? "text-danger" : usedPercent > 70 ? "text-amber-400" : "text-neon"
+            usedPercent > 90 ? "text-danger" : usedPercent > 70 ? "text-accent" : "text-neon"
           )}>
             {usedPercent}%
           </p>
@@ -74,7 +74,7 @@ export function StoragePoolMeter({ pool, accountCount }: StoragePoolMeterProps) 
             usedPercent > 90
               ? "bg-gradient-to-r from-crimson to-danger"
               : usedPercent > 70
-              ? "bg-gradient-to-r from-crimson to-amber-400"
+              ? "bg-gradient-to-r from-crimson to-accent"
               : "bg-gradient-to-r from-crimson to-neon"
           )}
         />
@@ -111,7 +111,7 @@ export function StoragePoolMeter({ pool, accountCount }: StoragePoolMeterProps) 
                       transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                       className={cn(
                         "h-full rounded-none",
-                        acctPercent > 90 ? "bg-danger" : acctPercent > 70 ? "bg-amber-400" : "bg-neon"
+                        acctPercent > 90 ? "bg-danger" : acctPercent > 70 ? "bg-accent" : "bg-neon"
                       )}
                     />
                   </div>

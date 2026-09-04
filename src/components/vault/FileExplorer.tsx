@@ -4,28 +4,15 @@ import { useState, useCallback, useRef, useEffect, useMemo, memo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
   Folder,
-  FolderOpen,
   FolderPlus,
   File,
-  Image,
-  Video,
   Music,
-  FileText,
-  FileSpreadsheet,
-  Presentation,
-  FileCode,
-  Archive,
   Upload,
-  Trash2,
-  Download,
-  Pencil,
-  Search,
   ChevronRight,
   ChevronDown,
   Home,
   X,
   Loader2,
-  Eye,
   Zap,
   Settings2,
   ArrowUpDown,
@@ -33,6 +20,26 @@ import {
 } from "lucide-react"
 import { cn, formatFileSize, formatDate } from "@/lib/utils"
 import type { GoogleAccount } from "@/types"
+import { zipSync } from "fflate"
+import { encryptVaultBytes } from "@/lib/crypto-vault"
+import { Search as PixelSearch, Upload as PixelUpload } from "pixelarticons/react"
+import {
+  Archive as PixelArchive,
+  File as PixelFile,
+  FileText as PixelFileText,
+  Folder as PixelFolder,
+  Image as PixelImage,
+  Music as PixelMusic,
+  Presentation as PixelPresentation,
+  Video as PixelVideo,
+  Braces as PixelCode,
+  Grid3x3 as PixelSpreadsheet,
+  Download as PixelDownload,
+  Eye as PixelEye,
+  Loader as PixelLoader,
+  Pencil as PixelPencil,
+  Trash as PixelTrash,
+} from "pixelarticons/react"
 
 interface DriveItem {
   id: string
@@ -56,7 +63,7 @@ interface FileExplorerProps {
 }
 
 interface CategoryStyle {
-  Icon: typeof File
+  Icon: React.ElementType
   box: string
   iconClass: string
   label: string
@@ -65,77 +72,70 @@ interface CategoryStyle {
 
 const categoryStyles: Record<string, CategoryStyle> = {
   folder: {
-    Icon: FolderOpen,
+    Icon: PixelFolder,
     box: "border-2 border-crimson/50 bg-crimson-muted/30 pixel-shadow-crimson",
     iconClass: "text-[#ff6b85]",
     label: "FOLDER",
-    pixelIcon: "/icons/folder-opened.svg",
   },
   image: {
-    Icon: Image,
+    Icon: PixelImage,
     box: "border-2 border-emerald-500/50 bg-emerald-500/10 pixel-shadow-dark",
     iconClass: "text-emerald-400",
     label: "PNG",
-    pixelIcon: "/icons/png.svg",
   },
   video: {
-    Icon: Video,
+    Icon: PixelVideo,
     box: "border-2 border-sky-500/50 bg-sky-500/10 pixel-shadow-dark",
     iconClass: "text-sky-400",
     label: "VIDEO",
   },
   audio: {
-    Icon: Music,
-    box: "border-2 border-violet-500/50 bg-violet-500/10 pixel-shadow-dark",
-    iconClass: "text-violet-400",
+    Icon: PixelMusic,
+    box: "border-2 border-[#2b0057]/50 bg-[#2b0057]/10 pixel-shadow-dark",
+    iconClass: "text-[#2b0057]",
     label: "AUDIO",
   },
   pdf: {
-    Icon: FileText,
+    Icon: PixelFileText,
     box: "border-2 border-red-500/50 bg-red-500/10 pixel-shadow-dark",
     iconClass: "text-red-400",
     label: "PDF",
-    pixelIcon: "/icons/pdf-file.svg",
   },
   document: {
-    Icon: FileText,
+    Icon: PixelFileText,
     box: "border-2 border-blue-500/50 bg-blue-500/10 pixel-shadow-dark",
     iconClass: "text-blue-400",
     label: "DOCX",
-    pixelIcon: "/icons/docx.svg",
   },
   spreadsheet: {
-    Icon: FileSpreadsheet,
+    Icon: PixelSpreadsheet,
     box: "border-2 border-lime-500/50 bg-lime-500/10 pixel-shadow-dark",
     iconClass: "text-lime-400",
     label: "EXCEL",
-    pixelIcon: "/icons/excel.svg",
   },
   presentation: {
-    Icon: Presentation,
+    Icon: PixelPresentation,
     box: "border-2 border-orange-500/50 bg-orange-500/10 pixel-shadow-dark",
     iconClass: "text-orange-400",
     label: "SLIDES",
   },
   code: {
-    Icon: FileCode,
+    Icon: PixelCode,
     box: "border-2 border-fuchsia-500/50 bg-fuchsia-500/10 pixel-shadow-dark",
     iconClass: "text-fuchsia-400",
     label: "TXT",
-    pixelIcon: "/icons/txt.svg",
   },
   archive: {
-    Icon: Archive,
-    box: "border-2 border-amber-500/50 bg-amber-500/10 pixel-shadow-dark",
-    iconClass: "text-amber-400",
+    Icon: PixelArchive,
+    box: "border-2 border-accent/50 bg-accent/10 pixel-shadow-dark",
+    iconClass: "text-accent",
     label: "ZIP",
   },
   file: {
-    Icon: File,
+    Icon: PixelFile,
     box: "border-2 border-neon/40 bg-neon-muted/20 pixel-shadow-neon",
     iconClass: "text-neon",
     label: "FILE",
-    pixelIcon: "/icons/txt.svg",
   },
 }
 
@@ -231,7 +231,8 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
 
   useEffect(() => {
     if (!searchQuery.trim()) {
-      fetchFiles(currentFolderId, currentAccountId)
+      const timer = window.setTimeout(() => fetchFiles(currentFolderId, currentAccountId), 0)
+      return () => window.clearTimeout(timer)
     }
   }, [currentFolderId, currentAccountId, fetchFiles, searchQuery])
 
@@ -441,7 +442,7 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
     >
       {/* ── Search bar (always visible) ── */}
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neon pointer-events-none" />
+        <PixelSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-accent pointer-events-none" />
         <input
           type="text"
           id="file-search"
@@ -449,7 +450,7 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && doSearch()}
           placeholder="SEARCH FILES..."
-          className="w-full h-11 sm:h-12 pl-11 pr-12 bg-surface border-2 border-border font-pixel text-xs text-text placeholder:text-text-muted/60 outline-none focus:border-neon focus:pixel-shadow-neon transition-all"
+          className="w-full h-11 sm:h-12 lg:h-14 pl-11 pr-12 bg-surface border-2 border-border font-pixel text-xs lg:text-sm text-text placeholder:text-text-muted/60 outline-none focus:border-accent focus:shadow-[3px_3px_0_0_rgba(221,44,0,0.45)] transition-all"
         />
         <AnimatePresence>
           {searchQuery && (
@@ -462,7 +463,7 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
                 setSearchQuery("")
                 fetchFiles(currentFolderId, currentAccountId)
               }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-text-muted hover:text-neon transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-text-muted hover:text-accent transition-colors"
             >
               <X className="w-4 h-4" />
             </motion.button>
@@ -487,7 +488,7 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
         <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap w-full sm:w-auto">
           <button
             onClick={() => setCreatingFolder(true)}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 h-10 px-3.5 sm:px-4 font-pixel text-[11px] sm:text-xs border-2 border-crimson text-crimson-hover hover:bg-crimson/20 pixel-shadow-crimson active:translate-x-0.5 active:translate-y-0.5 transition-all whitespace-nowrap"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 h-10 lg:h-12 px-3.5 sm:px-4 lg:px-5 font-pixel text-[11px] sm:text-xs lg:text-sm border-2 border-accent text-accent hover:bg-accent/20 pixel-shadow-dark active:translate-x-0.5 active:translate-y-0.5 transition-all whitespace-nowrap"
           >
             <FolderPlus className="w-4 h-4 shrink-0" />
             <span>NEW FOLDER</span>
@@ -495,9 +496,9 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
 
           <button
             onClick={() => setUploadOpen(true)}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 h-10 px-3.5 sm:px-4 font-pixel text-[11px] sm:text-xs border-2 border-neon text-neon hover:bg-neon/20 pixel-shadow-neon active:translate-x-0.5 active:translate-y-0.5 transition-all whitespace-nowrap"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 h-10 lg:h-12 px-3.5 sm:px-4 lg:px-5 font-pixel text-[11px] sm:text-xs lg:text-sm border-2 border-neon text-neon hover:bg-neon/20 pixel-shadow-neon active:translate-x-0.5 active:translate-y-0.5 transition-all whitespace-nowrap"
           >
-            <Upload className="w-4 h-4 shrink-0" />
+            <PixelUpload className="w-4 h-4 shrink-0" />
             <span>UPLOAD FILES</span>
           </button>
 
@@ -564,9 +565,9 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
             onClick={() => switchAccount(null)}
             className={cn(
               "px-3.5 py-1.5 font-pixel text-[10px] transition-all border-2 shrink-0",
-              currentAccountId === null
-                ? "border-neon bg-neon text-bg font-bold pixel-shadow-neon"
-                : "border-border text-text-muted hover:text-text hover:border-neon/40 bg-surface"
+                currentAccountId === null
+                ? "border-accent bg-accent text-bg font-bold pixel-shadow-dark"
+                : "border-border text-text-muted hover:text-text hover:border-accent/40 bg-surface"
             )}
           >
             ALL DRIVES
@@ -578,8 +579,8 @@ export function FileExplorer({ accounts }: FileExplorerProps) {
               className={cn(
                 "px-3.5 py-1.5 font-pixel text-[10px] transition-all border-2 truncate max-w-40 shrink-0",
                 currentAccountId === a.id
-                  ? "border-neon bg-neon text-bg font-bold pixel-shadow-neon"
-                  : "border-border text-text-muted hover:text-text hover:border-neon/40 bg-surface"
+                  ? "border-accent bg-accent text-bg font-bold pixel-shadow-dark"
+                  : "border-border text-text-muted hover:text-text hover:border-accent/40 bg-surface"
               )}
               title={a.account_email}
             >
@@ -752,7 +753,7 @@ const FileCard = memo(function FileCard({
   onDelete,
   accountEmail,
 }: FileCardProps) {
-  const { Icon, box, iconClass, label, pixelIcon } = getCategoryStyle(item.mimeType, item.isFolder)
+  const { Icon, iconClass, label, pixelIcon } = getCategoryStyle(item.mimeType, item.isFolder)
   const isRenaming = renamingId === item.id
   const isActioning = actionId === item.id
   const renameInputRef = useRef<HTMLInputElement>(null)
@@ -767,13 +768,15 @@ const FileCard = memo(function FileCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.97 }}
       transition={{ duration: 0.18, ease: "easeOut" }}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.995 }}
       className={cn(
         // PC (sm: and up): flex row items-center justify-between gap-4 p-3.5
         // Mobile (< sm): flex-col items-stretch gap-3 p-3
-        "group flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 p-3 sm:p-3.5 border-2 cursor-pointer transition-all duration-150 active:translate-x-0.5 active:translate-y-0.5",
+        "group flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 lg:gap-6 p-3 sm:p-3.5 lg:p-5 border-2 cursor-pointer transition-all duration-150 active:translate-x-0.5 active:translate-y-0.5",
         item.isFolder
-          ? "border-crimson/40 bg-surface hover:border-crimson hover:bg-crimson/10 pixel-shadow-crimson"
-          : "border-border bg-surface hover:border-neon/50 hover:bg-surface-hover pixel-shadow-dark",
+          ? "border-danger/40 bg-surface hover:border-danger hover:bg-danger/10 shadow-[3px_3px_0_0_rgba(248,113,113,0.35)]"
+          : "border-border bg-surface hover:border-danger/60 hover:bg-danger/10 pixel-shadow-dark",
         isActioning && "opacity-50 pointer-events-none"
       )}
       onClick={() => (item.isFolder ? onNavigate(item) : onPreview(item))}
@@ -781,10 +784,7 @@ const FileCard = memo(function FileCard({
       {/* ── Left side: Icon Box + File Info ── */}
       <div className="flex items-center gap-3 sm:gap-3.5 min-w-0 flex-1 w-full sm:w-auto">
         {/* ICON BOX - w-12 h-12 on mobile, w-14 h-14 on PC */}
-        <div className={cn(
-          "w-12 h-12 sm:w-14 sm:h-14 shrink-0 flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105",
-          box
-        )}>
+        <div className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden leading-none transition-transform group-hover:scale-105 sm:h-14 sm:w-14 lg:h-16 lg:w-16">
           {pixelIcon ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -796,7 +796,9 @@ const FileCard = memo(function FileCard({
               style={{ imageRendering: "pixelated" }}
             />
           ) : (
-            <Icon strokeWidth={2.2} className={cn("w-6 h-6 sm:w-7 sm:h-7", iconClass)} />
+            <span className="grid h-8 w-8 place-items-center sm:h-9 sm:w-9 lg:h-10 lg:w-10">
+              <Icon className={cn("block h-full w-full shrink-0", iconClass)} />
+            </span>
           )}
         </div>
 
@@ -819,7 +821,7 @@ const FileCard = memo(function FileCard({
           ) : (
             <h4
               className={cn(
-                "font-pixel text-xs leading-snug truncate tracking-wide",
+                "font-pixel text-xs leading-snug truncate tracking-wide lg:text-sm",
                 item.isFolder ? "text-text font-bold" : "text-text"
               )}
               title={item.name}
@@ -865,34 +867,34 @@ const FileCard = memo(function FileCard({
           {!item.isFolder && (
             <button
               onClick={() => onPreview(item)}
-              className="w-7 h-7 border border-transparent hover:border-neon/40 hover:bg-neon-muted flex items-center justify-center text-text-muted hover:text-neon transition-all"
+              className="h-9 w-9 border border-transparent hover:border-neon/40 hover:bg-neon-muted flex items-center justify-center text-text-muted hover:text-neon transition-all lg:h-10 lg:w-10"
               title="Preview"
             >
-              <Eye className="w-3.5 h-3.5" />
+              <PixelEye className="h-4 w-4 lg:h-5 lg:w-5" />
             </button>
           )}
           <button
             onClick={() => onDownload(item)}
-            className="w-7 h-7 border border-transparent hover:border-neon/40 hover:bg-neon-muted flex items-center justify-center text-text-muted hover:text-neon transition-all"
+            className="h-9 w-9 border border-transparent hover:border-neon/40 hover:bg-neon-muted flex items-center justify-center text-text-muted hover:text-neon transition-all lg:h-10 lg:w-10"
             title={item.isFolder ? "Open" : "Download"}
           >
-            <Download className="w-3.5 h-3.5" />
+            <PixelDownload className="h-4 w-4 lg:h-5 lg:w-5" />
           </button>
           <button
             onClick={() => onOpenRename(item)}
-            className="w-7 h-7 border border-transparent hover:border-crimson/40 hover:bg-crimson-muted flex items-center justify-center text-text-muted hover:text-crimson-hover transition-all"
+            className="h-9 w-9 border border-transparent hover:border-crimson/40 hover:bg-crimson-muted flex items-center justify-center text-text-muted hover:text-crimson-hover transition-all lg:h-10 lg:w-10"
             title="Rename"
           >
-            <Pencil className="w-3.5 h-3.5" />
+            <PixelPencil className="h-4 w-4 lg:h-5 lg:w-5" />
           </button>
           <button
             onClick={() => onDelete(item)}
-            className="w-7 h-7 border border-transparent hover:border-danger/40 hover:bg-danger-muted flex items-center justify-center text-text-muted hover:text-danger transition-all"
+            className="h-9 w-9 border border-transparent hover:border-danger/40 hover:bg-danger-muted flex items-center justify-center text-text-muted hover:text-danger transition-all lg:h-10 lg:w-10"
             title="Delete"
           >
             {isActioning
-              ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
-              : <Trash2 className="w-3.5 h-3.5" />}
+              ? <PixelLoader className="h-4 w-4 animate-spin lg:h-5 lg:w-5" />
+              : <PixelTrash className="h-4 w-4 lg:h-5 lg:w-5" />}
           </button>
         </div>
       </div>
@@ -920,6 +922,10 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
   const [uploading, setUploading] = useState(false)
   const [progress, setProgress] = useState({ label: "", percent: 0 })
   const [error, setError] = useState("")
+  const [compressZip, setCompressZip] = useState(false)
+  const [encryptBeforeUpload, setEncryptBeforeUpload] = useState(false)
+  const [vaultPassword, setVaultPassword] = useState("")
+  const [estimatedSavings, setEstimatedSavings] = useState<number | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const uploadOne = useCallback(async (
@@ -964,27 +970,93 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
     })
   }, [smartMode, targetAccountId])
 
+  const prepareUpload = useCallback(async (files: File[]) => {
+    if (!compressZip && !encryptBeforeUpload) return files
+    const sourceSize = files.reduce((total, file) => total + file.size, 0)
+    let output: File
+
+    if (compressZip) {
+      const entries: Record<string, Uint8Array> = {}
+      for (const [index, file] of files.entries()) {
+        setProgress({ label: `COMPRESSING ${file.name}`, percent: Math.round((index / files.length) * 45) })
+        entries[file.webkitRelativePath || file.name] = new Uint8Array(await file.arrayBuffer())
+        setProgress({ label: `COMPRESSING ${file.name}`, percent: Math.round(((index + 1) / files.length) * 45) })
+      }
+      const zipped = zipSync(entries, { level: 6, mtime: new Date() })
+      setEstimatedSavings(sourceSize > 0 ? Math.max(0, Math.round((1 - zipped.length / sourceSize) * 100)) : 0)
+      output = new globalThis.File([zipped], files.length === 1 ? `${files[0].name}.zip` : "zekora-vault.zip", { type: "application/zip" })
+    } else {
+      output = files[0]
+    }
+
+    if (encryptBeforeUpload) {
+      if (vaultPassword.length < 8) throw new Error("Enter an encryption password with at least 8 characters")
+      setProgress({ label: "ENCRYPTING IN BROWSER", percent: 45 })
+      const encrypted = await encryptVaultBytes(new Uint8Array(await output.arrayBuffer()), vaultPassword)
+      output = new globalThis.File([encrypted], `${output.name}.zekora`, { type: "application/octet-stream" })
+    }
+    return [output]
+  }, [compressZip, encryptBeforeUpload, vaultPassword])
+
   const doUploadFile = useCallback(async (file: File) => {
     setUploading(true)
     setProgress({ label: file.name, percent: 0 })
     setError("")
     try {
+      const prepared = await prepareUpload([file])
       await uploadOne(
-        file,
+        prepared[0],
         currentFolderId === "root" ? undefined : currentFolderId,
-        (percent) => setProgress({ label: file.name, percent })
+        (percent) => setProgress({ label: `UPLOADING ${prepared[0].name}`, percent })
       )
       onUploaded()
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed")
       setUploading(false)
     }
-  }, [uploadOne, currentFolderId, onUploaded])
+  }, [uploadOne, prepareUpload, currentFolderId, onUploaded])
+
+  const doUploadSelection = useCallback(async (files: FileList) => {
+    const selected = Array.from(files)
+    if (selected.length === 0) return
+    if (selected.length === 1) {
+      await doUploadFile(selected[0])
+      return
+    }
+    setUploading(true)
+    setError("")
+    try {
+      const prepared = await prepareUpload(selected)
+      for (const [index, file] of prepared.entries()) {
+        await uploadOne(file, currentFolderId === "root" ? undefined : currentFolderId, (percent) =>
+          setProgress({ label: `UPLOADING ${file.name}`, percent: Math.round(((index + percent / 100) / prepared.length) * 100) })
+        )
+      }
+      onUploaded()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Upload failed")
+      setUploading(false)
+    }
+  }, [doUploadFile, prepareUpload, uploadOne, currentFolderId, onUploaded])
 
   const doUploadFolder = useCallback(async (files: FileList) => {
     if (!files || files.length === 0) return
     setUploading(true)
     setError("")
+
+    if (compressZip || encryptBeforeUpload) {
+      try {
+        const prepared = await prepareUpload(Array.from(files))
+        await uploadOne(prepared[0], currentFolderId === "root" ? undefined : currentFolderId, (percent) =>
+          setProgress({ label: `UPLOADING ${prepared[0].name}`, percent })
+        )
+        onUploaded()
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Folder upload failed")
+        setUploading(false)
+      }
+      return
+    }
 
     const driveFolderIds = new Map<string, string>()
 
@@ -1026,7 +1098,7 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
       let processed = 0
       for (const [index, entry] of fileList.entries()) {
         let parentDriveId: string | undefined = currentFolderId === "root" ? undefined : currentFolderId
-        let walking: string[] = []
+        const walking: string[] = []
         for (const dir of entry.parts) {
           walking.push(dir)
           if (!driveFolderIds.has(walking.join("/"))) {
@@ -1052,7 +1124,7 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
       setError(err instanceof Error ? err.message : "Folder upload failed")
       setUploading(false)
     }
-  }, [uploadOne, currentFolderId, targetAccountId, onUploaded])
+  }, [uploadOne, prepareUpload, compressZip, encryptBeforeUpload, currentFolderId, targetAccountId, onUploaded])
 
   function handleDrop(e: React.DragEvent) {
     e.preventDefault()
@@ -1060,14 +1132,14 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
     const files = e.dataTransfer.files
     if (!files || files.length === 0) return
     if (kind === "folder") doUploadFolder(files)
-    else { const file = files[0]; if (file) doUploadFile(file) }
+    else doUploadSelection(files)
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files
     if (!files || files.length === 0) return
     if (kind === "folder") doUploadFolder(files)
-    else { const file = files[0]; if (file) doUploadFile(file) }
+    else doUploadSelection(files)
   }
 
   return (
@@ -1164,10 +1236,27 @@ function UploadModal({ accounts, currentAccountId, currentFolderId, onClose, onU
           </button>
         </div>
 
+        <div className="mb-4 space-y-2 border-2 border-border bg-bg p-3">
+          <label className="flex cursor-pointer items-center gap-2 font-pixel text-[10px] text-text-muted">
+            <input type="checkbox" checked={compressZip} onChange={(e) => setCompressZip(e.target.checked)} className="accent-fuchsia-500" />
+            <span>COMPRESS INTO ZIP BEFORE UPLOAD</span>
+          </label>
+          {estimatedSavings !== null && compressZip && (
+            <p className="pl-5 font-pixel text-[9px] text-emerald-400">ESTIMATED SPACE SAVINGS: {estimatedSavings}%</p>
+          )}
+          <label className="flex cursor-pointer items-center gap-2 font-pixel text-[10px] text-text-muted">
+            <input type="checkbox" checked={encryptBeforeUpload} onChange={(e) => setEncryptBeforeUpload(e.target.checked)} className="accent-fuchsia-500" />
+            <span>ENCRYPT IN BROWSER BEFORE UPLOAD</span>
+          </label>
+          {encryptBeforeUpload && (
+            <input type="password" value={vaultPassword} onChange={(e) => setVaultPassword(e.target.value)} placeholder="ENCRYPTION PASSWORD (8+ CHARACTERS)" className="ml-5 w-[calc(100%-1.25rem)] border-2 border-border bg-surface px-3 py-2 font-pixel text-[9px] text-text outline-none focus:border-neon" />
+          )}
+        </div>
+
         <input
           ref={inputRef}
           type="file"
-          {...(kind === "folder" ? { webkitdirectory: "", directory: "" } : {})}
+          {...(kind === "folder" ? { webkitdirectory: "", directory: "" } : { multiple: true })}
           onChange={handleChange}
           className="hidden"
         />
@@ -1270,7 +1359,7 @@ function PreviewModal({ item, accountEmail, onClose, onDownload }: PreviewModalP
               onClick={onDownload}
               className="flex items-center gap-1.5 px-3 py-1.5 font-pixel text-[10px] bg-neon text-bg font-bold hover:bg-neon-hover transition-colors border border-neon"
             >
-              <Download className="w-3.5 h-3.5" />
+              <PixelDownload className="h-4 w-4" />
               <span className="hidden sm:inline">DOWNLOAD</span>
             </button>
             <button
@@ -1306,7 +1395,7 @@ function PreviewModal({ item, accountEmail, onClose, onDownload }: PreviewModalP
                 onClick={onDownload}
                 className="flex items-center gap-2 px-4 py-2 font-pixel text-xs bg-neon text-bg font-bold hover:bg-neon-hover transition-colors border border-neon"
               >
-                <Download className="w-4 h-4" />
+                <PixelDownload className="h-5 w-5" />
                 DOWNLOAD TO VIEW
               </button>
             </div>

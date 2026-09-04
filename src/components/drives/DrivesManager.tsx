@@ -211,7 +211,7 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
                         usedPercent > 90
                           ? "bg-gradient-to-r from-crimson to-danger"
                           : usedPercent > 70
-                          ? "bg-gradient-to-r from-crimson to-amber-400"
+                          ? "bg-gradient-to-r from-crimson to-accent"
                           : "bg-gradient-to-r from-crimson to-neon"
                       )}
                     />

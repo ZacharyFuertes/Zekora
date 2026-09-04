@@ -4,17 +4,16 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import {
   HardDrive,
-  FolderOpen,
   PlusCircle,
   Zap,
   ArrowRight,
   ShieldCheck,
-  BarChart3,
   Server,
   Cloud,
 } from "lucide-react"
 import { formatFileSize } from "@/lib/utils"
 import type { GoogleAccount } from "@/types"
+import { ChartLine as PixelChartLine, CloudServer as PixelCloudServer, Folder as PixelFolder } from "pixelarticons/react"
 
 interface DashboardOverviewProps {
   accounts: GoogleAccount[]
@@ -34,11 +33,11 @@ export function DashboardOverview({ accounts }: DashboardOverviewProps) {
       className="space-y-6 max-w-7xl mx-auto pb-10"
     >
       {/* ── Top Header Banner ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 border-2 border-neon bg-surface pixel-shadow-neon">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 border-2 border-accent bg-surface shadow-[3px_3px_0_0_rgba(221,44,0,0.45)]">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="w-2.5 h-2.5 bg-neon animate-pulse" />
-            <span className="font-pixel text-[9px] text-neon tracking-widest uppercase">
+            <span className="w-2.5 h-2.5 bg-accent animate-pulse" />
+            <span className="font-pixel text-[9px] text-accent tracking-widest uppercase">
               SYSTEM COMMAND CENTER
             </span>
           </div>
@@ -53,9 +52,9 @@ export function DashboardOverview({ accounts }: DashboardOverviewProps) {
         <div className="flex items-center gap-3 flex-wrap">
           <Link
             href="/dashboard/files"
-            className="flex items-center gap-2 px-4 py-2.5 font-pixel text-xs bg-neon text-bg font-bold border-2 border-neon pixel-shadow-dark hover:bg-neon-hover transition-all active:translate-x-0.5 active:translate-y-0.5"
+            className="flex items-center gap-2 px-4 py-2.5 font-pixel text-xs bg-accent text-bg font-bold border-2 border-accent pixel-shadow-dark hover:bg-[#c62800] transition-all active:translate-x-0.5 active:translate-y-0.5"
           >
-            <FolderOpen className="w-4 h-4 shrink-0" />
+            <PixelFolder className="w-4 h-4 shrink-0" />
             <span>OPEN FILE VAULT</span>
             <ArrowRight className="w-4 h-4 shrink-0" />
           </Link>
@@ -66,12 +65,12 @@ export function DashboardOverview({ accounts }: DashboardOverviewProps) {
       <div className="border-2 border-border bg-surface p-5 pixel-shadow-dark space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/60 pb-3">
           <div className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-neon" />
+            <PixelChartLine className="w-5 h-5 text-accent" />
             <h2 className="font-pixel text-xs sm:text-sm font-bold text-text uppercase">
               TOTAL STORAGE CAPACITY
             </h2>
           </div>
-          <span className="font-pixel text-xs text-neon">
+          <span className="font-pixel text-xs text-accent">
             {usedPercentage}% USED ({formatFileSize(usedStorage)} / {formatFileSize(totalStorage)})
           </span>
         </div>
@@ -80,7 +79,7 @@ export function DashboardOverview({ accounts }: DashboardOverviewProps) {
         <div className="space-y-2">
           <div className="w-full h-5 border-2 border-border bg-bg p-0.5 overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-crimson to-neon transition-all duration-500"
+              className="h-full bg-gradient-to-r from-crimson to-accent transition-all duration-500"
               style={{ width: `${Math.min(100, Math.max(0, usedPercentage))}%` }}
             />
           </div>
@@ -96,37 +95,37 @@ export function DashboardOverview({ accounts }: DashboardOverviewProps) {
         <div className="border-2 border-border bg-surface p-4 pixel-shadow-dark">
           <div className="flex items-center justify-between">
             <span className="font-pixel text-[9px] text-text-muted uppercase">DRIVES CONNECTED</span>
-            <HardDrive className="w-5 h-5 text-neon" />
+            <PixelCloudServer className="w-5 h-5 text-accent" />
           </div>
           <p className="font-pixel text-xl font-bold text-text mt-2">{accounts.length}</p>
-          <p className="font-pixel text-[9px] text-neon/80 mt-1">ACTIVE INSTANCES</p>
+          <p className="font-pixel text-[9px] text-accent/80 mt-1">ACTIVE INSTANCES</p>
         </div>
 
         <div className="border-2 border-border bg-surface p-4 pixel-shadow-dark">
           <div className="flex items-center justify-between">
             <span className="font-pixel text-[9px] text-text-muted uppercase">FREE SPACE</span>
-            <Cloud className="w-5 h-5 text-emerald-400" />
+            <Cloud className="w-5 h-5 text-accent" />
           </div>
           <p className="font-pixel text-xl font-bold text-text mt-2">{formatFileSize(freeStorage)}</p>
-          <p className="font-pixel text-[9px] text-emerald-400 mt-1">READY FOR ALLOCATIONS</p>
+          <p className="font-pixel text-[9px] text-accent/80 mt-1">READY FOR ALLOCATIONS</p>
         </div>
 
         <div className="border-2 border-border bg-surface p-4 pixel-shadow-dark">
           <div className="flex items-center justify-between">
             <span className="font-pixel text-[9px] text-text-muted uppercase">SYSTEM STATUS</span>
-            <ShieldCheck className="w-5 h-5 text-neon" />
+            <ShieldCheck className="w-5 h-5 text-accent" />
           </div>
-          <p className="font-pixel text-base font-bold text-neon mt-2">ONLINE</p>
-          <p className="font-pixel text-[9px] text-text-muted mt-1">SMART ROUTING ACTIVE</p>
+          <p className="font-pixel text-base font-bold text-emerald-400 mt-2">ONLINE</p>
+          <p className="font-pixel text-[9px] text-accent/80 mt-1">SMART ROUTING ACTIVE</p>
         </div>
 
         <div className="border-2 border-border bg-surface p-4 pixel-shadow-dark">
           <div className="flex items-center justify-between">
             <span className="font-pixel text-[9px] text-text-muted uppercase">ROUTING MODE</span>
-            <Zap className="w-5 h-5 text-amber-400" />
+            <Zap className="w-5 h-5 text-accent" />
           </div>
           <p className="font-pixel text-base font-bold text-text mt-2">AUTO BALANCED</p>
-          <p className="font-pixel text-[9px] text-amber-400 mt-1">MAXIMIZING FREE SPACE</p>
+          <p className="font-pixel text-[9px] text-accent mt-1">MAXIMIZING FREE SPACE</p>
         </div>
       </div>
 
@@ -134,12 +133,12 @@ export function DashboardOverview({ accounts }: DashboardOverviewProps) {
       <div className="space-y-3">
         <div className="flex items-center justify-between px-1">
           <span className="font-pixel text-xs font-bold text-text uppercase tracking-wider flex items-center gap-2">
-            <Server className="w-4 h-4 text-neon" />
+            <Server className="w-4 h-4 text-accent" />
             CONNECTED GOOGLE DRIVES ({accounts.length})
           </span>
           <Link
             href="/dashboard/settings"
-            className="font-pixel text-[10px] text-neon hover:underline flex items-center gap-1"
+            className="font-pixel text-[10px] text-accent hover:underline flex items-center gap-1"
           >
             <PlusCircle className="w-3.5 h-3.5" />
             MANAGE DRIVES
@@ -171,8 +170,8 @@ export function DashboardOverview({ accounts }: DashboardOverviewProps) {
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="w-9 h-9 border-2 border-neon/40 bg-neon-muted flex items-center justify-center shrink-0">
-                        <HardDrive className="w-4 h-4 text-neon" />
+                      <div className="w-9 h-9 border-2 border-accent/40 bg-accent-muted flex items-center justify-center shrink-0">
+                        <HardDrive className="w-4 h-4 text-accent" />
                       </div>
                       <div className="min-w-0">
                         <p className="font-pixel text-xs font-bold text-text truncate" title={acc.account_email}>

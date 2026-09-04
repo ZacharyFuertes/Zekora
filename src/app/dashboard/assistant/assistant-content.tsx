@@ -87,7 +87,7 @@ export function AssistantContent() {
       <div className="flex flex-wrap items-center justify-between gap-3 border border-border bg-bg p-3">
         <div className="flex items-center gap-2">
           <UserRound className="h-4 w-4 text-neon" />
-          <span className="font-pixel text-[10px] uppercase tracking-widest text-text-muted">Difficulties: </span>
+          <span className="font-pixel text-[10px] uppercase tracking-widest text-2b0057">Difficulties: </span>
         </div>
         <div className="flex flex-wrap gap-2">
           {AVATAR_PROFILES.map((profile) => (
@@ -112,14 +112,14 @@ export function AssistantContent() {
         <div className="flex items-center justify-between border-b border-border bg-bg px-4 py-2">
           <div className="flex items-center gap-2">
             <Database className="h-3.5 w-3.5 text-neon" />
-            <span className="font-pixel text-[10px] uppercase tracking-widest text-text-muted">Vault transcript</span>
+            <span className="font-pixel text-[10px] uppercase tracking-widest text-[text-muted]">Vault transcript</span>
           </div>
-          <span className="font-pixel text-[9px] text-text-muted">{String(messages.length).padStart(2, "0")} MSG</span>
+          <span className="font-pixel text-[9px] text-[#2b0057]">{String(messages.length).padStart(2, "0")} MSG</span>
         </div>
         <div className="min-h-64 space-y-5 p-4 sm:p-6">
           {messages.map((message, index) => (
             <div key={`${message.role}-${index}`} className={message.role === "user" ? "ml-4 flex flex-col items-end sm:ml-16" : "mr-4 sm:mr-16"}>
-              <p className="mb-1 font-pixel text-[10px] uppercase tracking-widest text-text-muted">
+              <p className="mb-1 font-pixel text-[10px] uppercase tracking-widest text-[#dd2c00]">
                 {message.role === "user"
                   ? AVATAR_PROFILES.find((profile) => profile.id === message.profileId)?.name ?? "Black Guy"
                   : "Gengar"}
@@ -130,7 +130,7 @@ export function AssistantContent() {
                 )}
                 {message.role === "user" ? (
                   <div className="flex items-end gap-2">
-                    <p className="whitespace-pre-wrap border border-neon/50 bg-neon-muted p-3 font-pixel text-xs leading-6 text-text pixel-shadow-neon">
+                    <p className="whitespace-pre-wrap border border-neon/50 bg-[#dd2c00] neon-muted p-3 font-pixel text-xs leading-6 text-text pixel-shadow-neon">
                       {message.content}
                     </p>
                     <img
@@ -140,7 +140,7 @@ export function AssistantContent() {
                     />
                   </div>
                 ) : (
-                  <p className="whitespace-pre-wrap border border-border bg-bg p-3 font-pixel text-xs leading-6 text-text">
+                  <p className="whitespace-pre-wrap border border-[#dd2c00] bg-bg p-3 font-pixel text-xs leading-6 text-text">
                     {message.content}
                   </p>
                 )}
@@ -164,7 +164,7 @@ export function AssistantContent() {
           onChange={(event) => setPrompt(event.target.value)}
           placeholder="Ask your vault..."
           maxLength={8000}
-          className="min-w-0 flex-1 bg-bg px-3 py-3 font-pixel text-xs text-text outline-none placeholder:font-pixel placeholder:text-[10px] placeholder:uppercase placeholder:tracking-widest placeholder:text-text-muted focus:ring-1 focus:ring-neon"
+          className="min-w-0 flex-1 bg-bg px-3 py-3 font-pixel text-xs text-text outline-none placeholder:font-pixel placeholder:text-[10px] placeholder:uppercase placeholder:tracking-widest placeholder:text-text-[#dd2c00] focus:ring-1 focus:ring-[#dd2c00]"
           disabled={loading}
         />
         <button
