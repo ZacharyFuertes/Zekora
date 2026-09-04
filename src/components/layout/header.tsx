@@ -32,13 +32,13 @@ export function Header({ onMenuClick }: HeaderProps) {
   }
 
   return (
-    <header className="h-16 border-b-2 border-border flex items-center justify-between px-4 sm:px-6 gap-4 bg-surface sticky top-0 z-30">
+    <header className="h-16 border-b-2 border-[#0c0c12] flex items-center justify-between px-4 sm:px-6 gap-4 bg-transparent sticky top-0 z-30">
       {/* Mobile menu trigger */}
       <button
         type="button"
         onClick={onMenuClick}
         aria-label="Open navigation"
-        className="relative z-50 min-[1101px]:hidden grid h-10 w-10 place-items-center border-2 border-border bg-bg text-text-muted shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] transition-all hover:border-neon hover:bg-neon-muted hover:text-neon active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+        className="relative z-50 min-[1101px]:hidden grid h-10 w-10 place-items-center border-2 border-border bg-bg text-text-muted shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] transition-all hover:border-accent hover:bg-accent-muted hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
       >
         <Menu className="w-5 h-5" />
       </button>
@@ -56,12 +56,12 @@ export function Header({ onMenuClick }: HeaderProps) {
           className={cn(
             "flex items-center gap-2.5 px-3 py-1.5 rounded-none border-2 transition-all cursor-pointer select-none",
             menuOpen
-              ? "border-neon bg-surface text-neon pixel-shadow-neon"
-              : "border-border bg-surface-hover hover:border-neon/50 pixel-shadow-dark"
+              ? "border-accent bg-surface text-accent pixel-shadow-dark"
+              : "border-border bg-surface-hover hover:border-accent/50 pixel-shadow-dark"
           )}
         >
-          <div className="w-7 h-7 rounded-none bg-neon-muted border border-neon/40 flex items-center justify-center shrink-0">
-            <User className="w-3.5 h-3.5 text-neon" />
+          <div className="w-7 h-7 rounded-none bg-accent-muted border border-accent/40 flex items-center justify-center shrink-0">
+            <User className="w-3.5 h-3.5 text-accent" />
           </div>
           <span className="font-pixel text-xs text-text hidden sm:block truncate max-w-45">
             {displayName}
@@ -69,7 +69,7 @@ export function Header({ onMenuClick }: HeaderProps) {
           <ChevronDown
             className={cn(
               "w-3.5 h-3.5 text-text-muted hidden sm:block shrink-0 transition-transform duration-200",
-              menuOpen && "rotate-180 text-neon"
+              menuOpen && "rotate-180 text-accent"
             )}
           />
         </motion.div>
@@ -84,11 +84,11 @@ export function Header({ onMenuClick }: HeaderProps) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -6, scale: 0.98 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 top-12 z-50 w-64 border-2 border-neon bg-surface p-3 pixel-shadow-neon"
+                className="absolute right-0 top-12 z-50 w-64 border-2 border-accent bg-surface p-3 shadow-[3px_3px_0_0_rgba(221,44,0,0.45)]"
               >
                 {/* User Info Section */}
                 <div className="px-2 pb-2.5 mb-2 border-b border-border">
-                  <p className="font-pixel text-xs font-bold text-neon truncate">{displayName}</p>
+                  <p className="font-pixel text-xs font-bold text-accent truncate">{displayName}</p>
                   <p className="font-pixel text-[9px] text-text-muted mt-1 truncate">{email || "AUTHENTICATED USER"}</p>
                 </div>
 
@@ -99,7 +99,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                     onClick={() => setMenuOpen(false)}
                     className="flex items-center gap-2.5 px-2.5 py-2 font-pixel text-xs text-text-muted hover:text-text hover:bg-surface-hover transition-colors"
                   >
-                    <HardDrive className="w-4 h-4 shrink-0 text-neon" />
+                    <HardDrive className="w-4 h-4 shrink-0 text-accent" />
                     <span>MANAGED DRIVES</span>
                   </Link>
 
