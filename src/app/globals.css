@@ -23,7 +23,7 @@
   --color-accent: #dd2c00;
   --color-accent-muted: rgba(221, 44, 0, 0.16);
   --color-secondary: var(--color-accent);
-  --color-secondary-muted: var(--color-accent-muted);
+  --color-secondary-muted: rgba(221, 44, 0, 0.16);
   --color-text: #e4e4e7;
   --color-text-muted: #7c7c8a;
   --color-danger: #f87171;
@@ -65,8 +65,9 @@ body {
   background-image:
     linear-gradient(rgba(221, 44, 0, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(221, 44, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(135deg, rgba(20, 20, 38, 0.94), rgba(9, 9, 20, 0.98));
-  background-size: 20px 20px, 20px 20px, 100% 100%;
+    linear-gradient(135deg, rgba(20, 20, 38, 0.94), rgba(9, 9, 20, 0.98)),
+    radial-gradient(circle at 50% 30%, rgba(43, 0, 87, 0.2), transparent 58%);
+  background-size: 20px 20px, 20px 20px, 100% 100%, 100% 100%;
   background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-sans), system-ui, sans-serif;
@@ -76,8 +77,9 @@ body {
 .pixel-vault-grid {
   background-image:
     linear-gradient(rgba(221, 44, 0, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(221, 44, 0, 0.06) 1px, transparent 1px);
-  background-size: 16px 16px;
+    linear-gradient(90deg, rgba(221, 44, 0, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 50% 30%, rgba(43, 0, 87, 0.16), transparent 62%);
+  background-size: 16px 16px, 16px 16px, 100% 100%;
   image-rendering: pixelated;
 }
 
@@ -103,6 +105,62 @@ body {
 }
 .pixel-shadow-dark {
   box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.5);
+}
+
+/* RetroUI Card styling scoped to the file list only. */
+.retroui-file-card {
+  background-color: #16161f;
+  border: 5px solid #2a2a3a;
+  border-style: solid;
+  box-shadow: 2px 2px 0 2px #2b0057, -2px -2px 0 2px #16161f;
+  color: #e4e4e7;
+  margin: 0;
+}
+
+.retroui-file-card-folder:hover {
+  background-color: #16161f;
+  border-color: #2a2a3a;
+}
+
+.retroui-file-card-folder {
+  background-color: #16161f;
+  border-color: #2a2a3a;
+  border-width: 5px;
+  outline: 2px solid #0c0c12;
+  outline-offset: 2px;
+  border-image-source: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M3 1h1v1h-1zM4 1h1v1h-1zM2 2h1v1h-1zM5 2h1v1h-1zM1 3h1v1h-1zM6 3h1v1h-1zM1 4h1v1h-1zM6 4h1v1h-1zM2 5h1v1h-1zM5 5h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1z' fill='%232a2a3a'/%3E%3C/svg%3E");
+  border-image-slice: 3;
+  border-image-outset: 2px;
+  border-image-repeat: stretch;
+  box-shadow: 2px 2px 0 2px #2b0057, -2px -2px 0 2px #16161f;
+  color: #e4e4e7;
+}
+
+.retroui-file-card .text-text {
+  color: #e4e4e7;
+}
+
+.retroui-file-card .text-text-muted,
+.retroui-file-card .text-text-muted\/70 {
+  color: #7c7c8a;
+}
+
+.retroui-file-card-file:hover {
+  background-color: rgba(248, 113, 113, 0.1);
+  border-color: #f87171;
+}
+
+@keyframes accent-glow-move {
+  0%, 100% {
+    box-shadow: 0 0 14px 2px rgba(221, 44, 0, 0.5), 0 0 30px 4px rgba(221, 44, 0, 0.2), 3px 3px 0 0 rgba(221, 44, 0, 0.5);
+  }
+  50% {
+    box-shadow: -1px 1px 22px 3px rgba(221, 44, 0, 0.75), 2px 0 42px 7px rgba(221, 44, 0, 0.3), 2px 4px 0 0 rgba(221, 44, 0, 0.58);
+  }
+}
+
+.animate-accent-glow {
+  animation: accent-glow-move 2.4s ease-in-out infinite;
 }
 
 /* ── Grain (keep faint) ── */

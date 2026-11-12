@@ -35,19 +35,20 @@ export async function proxy(request: NextRequest) {
     request.nextUrl.pathname.startsWith("/auth")
 
   const isApiRoute = request.nextUrl.pathname.startsWith("/api")
+  const isLandingPage = request.nextUrl.pathname === "/"
   const isStaticFile =
     request.nextUrl.pathname.startsWith("/_next") ||
     request.nextUrl.pathname.startsWith("/favicon")
 
   if (isStaticFile) return supabaseResponse
 
-  if (!user && !isAuthPage && !isApiRoute) {
+  if (!user && !isAuthPage && !isApiRoute && !isLandingPage) {
     const url = request.nextUrl.clone()
     url.pathname = "/login"
     return NextResponse.redirect(url)
   }
 
-  if (user && isAuthPage) {
+  if (user && (isAuthPage || isLandingPage)) {
     const url = request.nextUrl.clone()
     url.pathname = "/dashboard"
     return NextResponse.redirect(url)
