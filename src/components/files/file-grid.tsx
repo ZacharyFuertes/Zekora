@@ -14,7 +14,7 @@ export function FileGrid({ files, onDelete }: FileGridProps) {
   if (files.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-surface border border-border flex items-center justify-center mb-4">
+        <div className="w-16 h-16 rounded-sm bg-surface border border-border flex items-center justify-center mb-4">
           <Inbox className="w-7 h-7 text-text-muted" />
         </div>
         <h3 className="text-base font-medium text-text">Your vault is empty</h3>

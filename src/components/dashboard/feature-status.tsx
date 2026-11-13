@@ -28,14 +28,14 @@ export function FeatureStatus({
 
       <div className="grid min-h-[25rem] items-center gap-8 border-2 border-border bg-surface p-6 shadow-[4px_4px_0_0_rgba(168,85,247,0.14)] sm:p-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:p-14">
         <div className="max-w-xl">
-          <div className="mb-7 flex h-20 w-20 items-center justify-center rounded-3xl border-2 border-neon/50 bg-neon-muted shadow-[0_0_24px_rgba(168,85,247,0.14)]">
+          <div className="mb-7 flex h-20 w-20 items-center justify-center rounded-sm border-2 border-neon/50 bg-neon-muted shadow-[0_0_24px_rgba(168,85,247,0.14)]">
             <Icon className="h-9 w-9 text-neon" />
           </div>
           <p className="font-pixel text-[10px] uppercase tracking-widest text-secondary">FEATURE QUEUED</p>
           <p className="mt-4 text-sm leading-7 text-text-muted">{description}</p>
           <Link
             href={actionHref}
-            className="mt-8 inline-flex items-center gap-2 rounded-lg border-2 border-neon bg-neon px-4 py-2.5 font-pixel text-[10px] font-bold uppercase text-bg pixel-shadow-dark transition-colors hover:bg-neon-hover"
+            className="mt-8 inline-flex items-center gap-2 rounded-sm border-2 border-neon bg-neon px-4 py-2.5 font-pixel text-[10px] font-bold uppercase text-bg pixel-shadow-dark transition-colors hover:bg-neon-hover"
           >
             {actionLabel}
             <ArrowRight className="h-3.5 w-3.5" />

@@ -10,7 +10,7 @@ export function HiddenVaultScene() {
     <div className="flex min-h-[calc(100dvh-8rem)] flex-col items-center gap-3 pb-8">
       {gateReady && (
         <div className="relative z-0 -mb-16 flex flex-col items-center pt-2 animate-gengar-arrive">
-          <div className="relative z-10 max-w-[15rem] rounded-2xl border-2 border-secondary/60 bg-secondary-muted px-4 py-2 text-center font-pixel text-[9px] uppercase leading-relaxed tracking-wide text-secondary shadow-[3px_3px_0_0_rgba(245,158,11,0.16)]">
+          <div className="relative z-10 max-w-[15rem] rounded-sm border-2 border-secondary/60 bg-secondary-muted px-4 py-2 text-center font-pixel text-[9px] uppercase leading-relaxed tracking-wide text-secondary shadow-[3px_3px_0_0_rgba(245,158,11,0.16)]">
             Psst, Wanna hide something illegal?
           </div>
           <span className="-mt-1 h-3 w-3 rotate-45 border-b-2 border-r-2 border-secondary/60 bg-secondary-muted" aria-hidden="true" />

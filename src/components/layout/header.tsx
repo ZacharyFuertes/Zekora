@@ -32,13 +32,13 @@ export function Header({ onMenuClick }: HeaderProps) {
   }
 
   return (
-    <header className="h-16 border-b-2 border-[#0c0c12] flex items-center justify-between px-4 sm:px-6 gap-4 bg-transparent sticky top-0 z-30">
+    <header className="h-16 border-b-2 border-[var(--color-border)] flex items-center justify-between px-4 sm:px-6 gap-4 bg-transparent sticky top-0 z-30">
       {/* Mobile menu trigger */}
       <button
         type="button"
         onClick={onMenuClick}
         aria-label="Open navigation"
-        className="relative z-50 min-[1101px]:hidden grid h-10 w-10 place-items-center border-2 border-border bg-bg text-text-muted shadow-[3px_3px_0_0_rgba(0,0,0,0.5)] transition-all hover:border-accent hover:bg-accent-muted hover:text-accent active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+        className="relative z-50 min-[1101px]:hidden grid h-10 w-10 place-items-center border-2 border-[var(--color-border)] bg-[var(--color-surface-raised)] text-[var(--color-text-muted)] shadow-[3px_3px_0_0_rgba(255,90,31,0.5)] transition-all hover:border-[var(--color-primary)] hover:bg-[var(--color-surface)] hover:text-[var(--color-primary)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
       >
         <Menu className="w-5 h-5" />
       </button>
@@ -56,8 +56,8 @@ export function Header({ onMenuClick }: HeaderProps) {
           className={cn(
             "flex items-center gap-2.5 px-3 py-1.5 rounded-none border-2 transition-all cursor-pointer select-none",
             menuOpen
-              ? "border-accent bg-surface text-accent pixel-shadow-dark"
-              : "border-border bg-surface-hover hover:border-accent/50 pixel-shadow-dark"
+              ? "border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-accent)] pixel-shadow-dark"
+              : "border-[var(--color-border)] bg-[var(--color-surface-hover)] hover:border-[var(--color-primary)]/50 pixel-shadow-dark"
           )}
         >
           <div className="w-7 h-7 rounded-none bg-accent-muted border border-accent/40 flex items-center justify-center shrink-0">
@@ -84,10 +84,10 @@ export function Header({ onMenuClick }: HeaderProps) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -6, scale: 0.98 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 top-12 z-50 w-64 border-2 border-accent bg-surface p-3 shadow-[3px_3px_0_0_rgba(221,44,0,0.45)]"
+                className="absolute right-0 top-12 z-50 w-64 border-2 border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-[3px_3px_0_0_rgba(255,90,31,0.45)]"
               >
                 {/* User Info Section */}
-                <div className="px-2 pb-2.5 mb-2 border-b border-border">
+                <div className="px-2 pb-2.5 mb-2 border-b border-[var(--color-border)]">
                   <p className="font-pixel text-xs font-bold text-accent truncate">{displayName}</p>
                   <p className="font-pixel text-[9px] text-text-muted mt-1 truncate">{email || "AUTHENTICATED USER"}</p>
                 </div>
@@ -97,7 +97,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   <Link
                     href="/dashboard/settings"
                     onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-2.5 py-2 font-pixel text-xs text-text-muted hover:text-text hover:bg-surface-hover transition-colors"
+                    className="flex items-center gap-2.5 px-2.5 py-2 font-pixel text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-raised)] transition-colors"
                   >
                     <HardDrive className="w-4 h-4 shrink-0 text-accent" />
                     <span>MANAGED DRIVES</span>
@@ -106,7 +106,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                   <Link
                     href="/dashboard/settings"
                     onClick={() => setMenuOpen(false)}
-                    className="flex items-center gap-2.5 px-2.5 py-2 font-pixel text-xs text-text-muted hover:text-text hover:bg-surface-hover transition-colors"
+                    className="flex items-center gap-2.5 px-2.5 py-2 font-pixel text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-raised)] transition-colors"
                   >
                     <Settings className="w-4 h-4 shrink-0" />
                     <span>SETTINGS</span>
@@ -117,7 +117,7 @@ export function Header({ onMenuClick }: HeaderProps) {
                       setMenuOpen(false)
                       handleSignOut()
                     }}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 font-pixel text-xs text-danger hover:bg-danger-muted border border-transparent hover:border-danger/40 transition-colors mt-1"
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 font-pixel text-[var(--color-danger)] hover:bg-[var(--color-danger-muted)] border border-transparent hover:border-[var(--color-danger)]/40 transition-colors mt-1"
                   >
                     <LogOut className="w-4 h-4 shrink-0" />
                     <span>SIGN OUT</span>

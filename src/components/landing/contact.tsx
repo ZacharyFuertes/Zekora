@@ -76,7 +76,7 @@ export function Contact() {
 
           <dl className="mt-10 grid max-w-md grid-cols-2 gap-4">
             {contactCopy.panel.map((item) => (
-              <div key={item.label} className="rounded-lg border dz-bd p-4">
+              <div key={item.label} className="rounded-sm border dz-bd p-4">
                 <dt className="dz-mono text-[0.625rem] uppercase tracking-[0.05em] dz-fg-muted">
                   {item.label}
                 </dt>
@@ -85,7 +85,7 @@ export function Contact() {
                 </dd>
               </div>
             ))}
-            <div className="col-span-2 flex items-center gap-3 rounded-lg border dz-bd p-4">
+            <div className="col-span-2 flex items-center gap-3 rounded-sm border dz-bd p-4">
               <AlertTriangle
                 aria-hidden="true"
                 className="h-5 w-5 shrink-0 dz-fg-cyan"
@@ -98,7 +98,7 @@ export function Contact() {
         <form
           onSubmit={handleSubmit}
           noValidate
-          className="rounded-lg border dz-bd-strong bg-[rgba(9,9,20,0.78)] p-6 sm:p-8"
+          className="rounded-sm border dz-bd-strong bg-[rgba(9,9,20,0.78)] p-6 sm:p-8"
         >
           <p className="dz-mono text-[0.625rem] uppercase tracking-[0.05em] dz-fg-cyan">
             {contactCopy.formCommand}
@@ -138,7 +138,7 @@ export function Contact() {
               <p
                 id="contact-email-error"
                 role="alert"
-                className="mt-2 text-[0.625rem] leading-[1.8] text-[#fca5a5]"
+                className="mt-2 text-[0.625rem] leading-[1.8] text-[var(--color-danger)]"
               >
                 {error}
               </p>

@@ -264,7 +264,7 @@ export async function createCollection(data: {
       name: data.name,
       description: data.description ?? "",
       mood: data.mood ?? "calm",
-      color: data.color ?? "#a78bfa",
+      color: data.color ?? "--color-accent",
       icon: data.icon ?? "folder",
     })
     .select()
@@ -320,7 +320,7 @@ export async function createTag(data: {
     .insert({
       user_id: data.user_id,
       name: data.name,
-      color: data.color ?? "#a78bfa",
+      color: data.color ?? "--color-accent",
     })
     .select()
     .single()

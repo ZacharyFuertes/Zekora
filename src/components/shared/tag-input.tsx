@@ -45,7 +45,7 @@ export function TagInput({ tags, suggestions = [], onChange, placeholder = "Add 
 
   return (
     <div className="relative">
-      <div className="flex flex-wrap gap-1.5 p-2 rounded-xl border border-border bg-bg min-h-[42px] focus-within:border-primary transition-colors">
+      <div className="flex flex-wrap gap-1.5 p-2 rounded-sm border border-border bg-bg min-h-[42px] focus-within:border-primary transition-colors">
         <AnimatePresence>
           {tags.map((tag) => (
             <motion.span
@@ -53,7 +53,7 @@ export function TagInput({ tags, suggestions = [], onChange, placeholder = "Add 
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-primary-muted text-primary text-xs"
+              className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-sm bg-primary-muted text-primary text-xs"
             >
               {tag}
               <button onClick={() => removeTag(tag)} className="hover:text-primary-hover">
@@ -80,13 +80,13 @@ export function TagInput({ tags, suggestions = [], onChange, placeholder = "Add 
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            className="absolute z-10 top-full mt-1 w-full rounded-xl border border-border bg-surface p-1 shadow-lg"
+            className="absolute z-10 top-full mt-1 w-full rounded-sm border border-border bg-surface p-1 shadow-lg"
           >
             {filtered.map((s) => (
               <button
                 key={s}
                 onClick={() => addTag(s)}
-                className="w-full text-left px-3 py-1.5 rounded-lg text-sm text-text-muted hover:text-text hover:bg-surface-hover transition-colors"
+                className="w-full text-left px-3 py-1.5 rounded-sm text-sm text-text-muted hover:text-text hover:bg-surface-hover transition-colors"
               >
                 {s}
               </button>

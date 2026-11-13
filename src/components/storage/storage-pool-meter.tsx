@@ -14,9 +14,9 @@ interface StoragePoolMeterProps {
 export function StoragePoolMeter({ pool, accountCount }: StoragePoolMeterProps) {
   if (!pool || pool.total === 0) {
     return (
-      <div className="rounded-2xl border border-border bg-surface p-4">
+      <div className="rounded-sm border border-border bg-surface p-4 pixel-shadow-dark">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-surface-hover flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-sm bg-surface-hover flex items-center justify-center shrink-0">
             <HardDrive className="w-5 h-5 text-text-muted" />
           </div>
           <div className="min-w-0">
@@ -37,11 +37,11 @@ export function StoragePoolMeter({ pool, accountCount }: StoragePoolMeterProps) 
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="rounded-2xl border border-border bg-surface p-4"
+      className="rounded-sm border border-border bg-surface p-4 pixel-shadow-dark"
     >
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-neon-muted flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-sm bg-neon-muted flex items-center justify-center shrink-0">
             <HardDrive className="w-5 h-5 text-neon" />
           </div>
           <div>

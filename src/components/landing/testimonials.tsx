@@ -37,7 +37,7 @@ export function Testimonials() {
               delay={index * 80}
               className={cn("h-full", testimonial.offset)}
             >
-              <figure className="relative flex h-full flex-col rounded-lg border dz-bd bg-[rgba(9,9,20,0.72)] p-6">
+              <figure className="relative flex h-full flex-col rounded-sm border dz-bd bg-[rgba(9,9,20,0.72)] p-6">
                 <Quote
                   aria-hidden="true"
                   className="h-6 w-6 dz-fg-cyan"

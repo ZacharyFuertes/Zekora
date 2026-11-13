@@ -29,7 +29,7 @@ export function Features() {
               delay={(index % 3) * 80}
               className={cn("md:col-span-6", feature.span)}
             >
-              <article className="group relative h-full overflow-hidden rounded-lg border dz-bd bg-[linear-gradient(180deg,rgba(43,0,87,0.34),rgba(9,9,20,0.82))] p-6 transition-colors duration-200 hover:border-[color:var(--dz-border-strong)]">
+              <article className="group relative h-full overflow-hidden rounded-sm border dz-bd bg-[linear-gradient(180deg,rgba(43,0,87,0.34),rgba(9,9,20,0.82))] p-6 transition-colors duration-200 hover:border-[color:var(--dz-border-strong)]">
                 <span className="pointer-events-none absolute right-4 top-3 dz-mono text-[0.625rem] tracking-[0.05em] dz-fg-muted">
                   {String(index + 1).padStart(2, "0")}
                 </span>

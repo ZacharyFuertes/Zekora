@@ -206,11 +206,10 @@ export const pricingPlans: PricingPlan[] = [
 ]
 
 export const heroCopy = {
-  badge: "Alpha // invite only",
-  headline: "ZEKORA",
-  subtitle: "// Encrypted personal cloud vault",
+  headline: "PROJECT ZEKORA",
+  subtitle: "Link every Google Drive you own into one file explorer.",
   description:
-    "Link every Google Drive you own into one file explorer. Passwords, notes, hidden files, and an AI assistant stay behind the same login, and every action leaves an audit trail.",
+    "Passwords, notes, hidden files, and an AI assistant stay behind the same login, and every action leaves an audit trail.",
   primaryCta: "Start now",
   secondaryCta: "View demo",
 } as const

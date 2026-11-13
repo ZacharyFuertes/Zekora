@@ -69,7 +69,7 @@ export function Navbar() {
       <div
         id="mobile-navigation"
         className={cn(
-          "fixed inset-0 z-[200] flex flex-col bg-[#090914] px-6 py-5 transition-opacity duration-200 md:hidden",
+          "fixed inset-0 z-[200] flex flex-col bg-[var(--color-bg)] px-6 py-5 transition-opacity duration-200 md:hidden",
           open
             ? "pointer-events-auto visible opacity-100"
             : "pointer-events-none invisible opacity-0"

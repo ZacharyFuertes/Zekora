@@ -60,17 +60,17 @@ function NavLink({
       className={cn(
         "relative flex cursor-pointer items-center gap-3 px-3 py-2.5 rounded-sm font-pixel text-xs transition-all border border-transparent",
         isActive
-          ? "bg-[#0c0c12] text-[#c62800] border-[#0c0c12] shadow-[3px_3px_0_0_rgba(12,12,18,0.45)]"
+          ? "bg-[var(--color-sidebar)] text-[var(--color-primary)] border-[var(--color-border)] shadow-[3px_3px_0_0_rgba(255,90,31,0.45)]"
           : item.disabled
           ? "text-text-muted/35 cursor-not-allowed select-none"
           : item.href === "/dashboard/files"
-          ? "text-[#2b1510] hover:text-[#f87171] hover:bg-[#f87171]/20 hover:border-[#f87171]/60"
-          : "text-[#2b1510] hover:text-[#0c0c12] hover:bg-[#c62800]/70 hover:border-[#0c0c12]/30"
+          ? "text-[var(--color-text-muted)] hover:text-[var(--color-warning)] hover:bg-[var(--color-surface-raised)] hover:border-[var(--color-border)]/60"
+          : "text-[var(--color-text-muted)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface-raised)] hover:border-[var(--color-border)]/30"
       )}
     >
       {/* Active indicator */}
       {isActive && (
-        <span className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-4 bg-[#c62800]" />
+        <span className="absolute -left-3 top-1/2 -translate-y-1/2 w-1.5 h-4 bg-[var(--color-primary)]" />
       )}
       <item.icon className="w-4 h-4 shrink-0" />
       <span className="flex-1 truncate">{item.label}</span>
@@ -104,7 +104,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
   return (
     <>
       {/* Logo */}
-      <div className="relative flex items-center justify-center px-5 h-16 border-b-2 border-[#0c0c12] shrink-0">
+      <div className="relative flex items-center justify-center px-5 h-16 border-b-2 border-[var(--color-border)] shrink-0">
         <Image src="/zekora-logo-text-new.png" alt="Zekora" width={800} height={375} unoptimized className="h-8 w-50 max-w-full" />
         {onClose && (
           <button
@@ -129,7 +129,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
       </nav>
 
       {/* Bottom: drives + settings */}
-      <div className="px-3 pb-4 border-t-2 border-[#0c0c12] pt-3 space-y-1">
+      <div className="px-3 pb-4 border-t-2 border-[var(--color-border)] pt-3 space-y-1">
         {bottomNavItems.map((item) => (
           <NavLink
             key={item.label}
@@ -173,7 +173,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
-              className="pointer-events-auto fixed left-0 top-0 bottom-0 z-60 flex w-64 max-w-[80vw] flex-col border-r-2 border-[#0c0c12] bg-[#c62800] pixel-shadow-dark"
+              className="pointer-events-auto fixed left-0 top-0 bottom-0 z-60 flex w-64 max-w-[80vw] flex-col border-r-2 border-[var(--color-border)] bg-[var(--color-sidebar)] pixel-shadow-dark"
             >
               <SidebarContent onClose={onMobileClose} />
             </motion.aside>
@@ -185,7 +185,7 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
 
   /* ── Desktop sidebar ── */
   return (
-    <aside className="hidden min-[1101px]:flex flex-col w-72 shrink-0 border-r-2 border-[#0c0c12] bg-[#c62800] h-dvh sticky top-0 z-30">
+    <aside className="hidden min-[1101px]:flex flex-col w-72 shrink-0 border-r-2 border-[var(--color-border)] bg-[var(--color-sidebar)] h-dvh sticky top-0 z-30">
       <SidebarContent />
     </aside>
   )

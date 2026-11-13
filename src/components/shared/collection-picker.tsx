@@ -19,7 +19,7 @@ export function CollectionPicker({ collections, value, onChange }: CollectionPic
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2 w-full px-3 py-2.5 rounded-xl border border-border bg-bg text-sm text-text hover:border-primary/50 transition-colors"
+        className="flex items-center gap-2 w-full px-3 py-2.5 rounded-sm border border-border bg-bg text-sm text-text hover:border-primary/50 transition-colors"
       >
         {selected ? (
           <>
@@ -48,11 +48,11 @@ export function CollectionPicker({ collections, value, onChange }: CollectionPic
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            className="absolute z-10 top-full mt-1 w-full rounded-xl border border-border bg-surface p-1 shadow-lg"
+            className="absolute z-10 top-full mt-1 w-full rounded-sm border border-border bg-surface p-1 shadow-lg"
           >
             <button
               onClick={() => { onChange(undefined); setOpen(false) }}
-              className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-muted hover:text-text hover:bg-surface-hover transition-colors"
+              className="w-full text-left px-3 py-2 rounded-sm text-sm text-text-muted hover:text-text hover:bg-surface-hover transition-colors"
             >
               No collection
             </button>
@@ -60,7 +60,7 @@ export function CollectionPicker({ collections, value, onChange }: CollectionPic
               <button
                 key={c.id}
                 onClick={() => { onChange(c.id); setOpen(false) }}
-                className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-lg text-sm text-text hover:bg-surface-hover transition-colors"
+                className="flex items-center gap-2 w-full text-left px-3 py-2 rounded-sm text-sm text-text hover:bg-surface-hover transition-colors"
               >
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: c.color }} />
                 {c.name}

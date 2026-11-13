@@ -26,14 +26,14 @@ export function Pricing() {
           <Reveal key={plan.name} delay={index * 80} className="h-full">
             <article
               className={cn(
-                "relative flex h-full flex-col rounded-lg border p-6 transition-colors duration-200",
+                "relative flex h-full flex-col rounded-sm border p-6 transition-colors duration-200",
                 plan.highlighted
                   ? "border-[color:var(--dz-accent)] bg-[linear-gradient(180deg,rgba(168,85,247,0.16),rgba(9,9,20,0.9))] shadow-[0_0_60px_rgba(168,85,247,0.14)] lg:py-9"
                   : "dz-bd bg-[rgba(9,9,20,0.62)] hover:border-[color:var(--dz-border-strong)]"
               )}
             >
               {plan.highlighted ? (
-                <span className="absolute -top-3 left-6 rounded-sm bg-[var(--dz-accent)] px-2 py-1 dz-mono text-[0.5625rem] font-bold uppercase tracking-[0.05em] text-[#0c0c12]">
+                <span className="absolute -top-3 left-6 rounded-sm bg-[var(--dz-accent)] px-2 py-1 dz-mono text-[0.5625rem] font-bold uppercase tracking-[0.05em] text-[var(--color-bg)]">
                   Recommended
                 </span>
               ) : null}

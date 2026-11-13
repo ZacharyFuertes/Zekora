@@ -74,7 +74,7 @@ const categoryStyles: Record<string, CategoryStyle> = {
   folder: {
     Icon: PixelFolder,
     box: "border-2 border-crimson/50 bg-crimson-muted/30 pixel-shadow-crimson",
-    iconClass: "text-[#ff6b85]",
+    iconClass: "text-[var(--color-danger)]",
     label: "FOLDER",
   },
   image: {
@@ -91,8 +91,8 @@ const categoryStyles: Record<string, CategoryStyle> = {
   },
   audio: {
     Icon: PixelMusic,
-    box: "border-2 border-[#2b0057]/50 bg-[#2b0057]/10 pixel-shadow-dark",
-    iconClass: "text-[#2b0057]",
+    box: "border-2 border-[var(--color-primary)]/50 bg-[var(--color-primary)]/10 pixel-shadow-dark",
+    iconClass: "text-[var(--color-primary)]",
     label: "AUDIO",
   },
   pdf: {
@@ -849,7 +849,7 @@ const FileCard = memo(function FileCard({
           <span className={cn(
             "font-pixel text-[8px] px-2 py-0.5 border font-bold uppercase tracking-wider whitespace-nowrap",
             item.isFolder
-              ? "text-[#ff8ba2] bg-crimson/20 border-crimson/50"
+              ? "text-[var(--color-danger)] bg-[var(--color-danger)]/20 border-[var(--color-danger)]/50"
               : "text-neon bg-neon-muted border-neon/40"
           )}>
             {label}

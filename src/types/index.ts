@@ -87,12 +87,12 @@ export interface DriveNavItem {
 }
 
 export const MOODS = [
-  { id: "calm", label: "Calm", color: "#a78bfa" },
-  { id: "focus", label: "Focus", color: "#34d399" },
-  { id: "late-night", label: "Late Night", color: "#818cf8" },
-  { id: "inspiration", label: "Inspiration", color: "#fbbf24" },
-  { id: "archive", label: "Archive", color: "#f87171" },
-  { id: "work", label: "Work", color: "#60a5fa" },
+  { id: "calm", label: "Calm", color: "--color-accent" },
+  { id: "focus", label: "Focus", color: "--color-success" },
+  { id: "late-night", label: "Late Night", color: "--color-accent-deep" },
+  { id: "inspiration", label: "Inspiration", color: "--color-warning" },
+  { id: "archive", label: "Archive", color: "--color-danger" },
+  { id: "work", label: "Work", color: "--color-primary" },
 ] as const
 
 export const COLLECTION_ICONS = [

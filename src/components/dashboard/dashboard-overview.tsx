@@ -52,7 +52,7 @@ export function DashboardOverview({ accounts }: DashboardOverviewProps) {
         <div className="flex items-center gap-3 flex-wrap">
           <Link
             href="/dashboard/files"
-            className="flex items-center gap-2 px-4 py-2.5 font-pixel text-xs bg-accent text-bg font-bold border-2 border-accent pixel-shadow-dark hover:bg-[#c62800] transition-all active:translate-x-0.5 active:translate-y-0.5"
+            className="flex items-center gap-2 px-4 py-2.5 font-pixel text-xs bg-accent text-bg font-bold border-2 border-accent pixel-shadow-dark hover:bg-[var(--color-primary)] transition-all active:translate-x-0.5 active:translate-y-0.5"
           >
             <PixelFolder className="w-4 h-4 shrink-0" />
             <span>OPEN FILE VAULT</span>

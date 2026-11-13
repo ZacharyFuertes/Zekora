@@ -13,7 +13,7 @@ export function LandingPage() {
     <div className="landing-root">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[300] focus:rounded-md focus:border focus:border-[color:var(--dz-cyan)] focus:bg-[#090914] focus:px-4 focus:py-2 focus:text-[0.75rem] focus:text-[color:var(--dz-cyan)]"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[300] focus:rounded-md focus:border focus:bg-[var(--color-bg)] focus:px-4 focus:py-2 focus:text-[0.75rem] focus:text-[color:var(--dz-cyan)]"
       >
         Skip to content
       </a>

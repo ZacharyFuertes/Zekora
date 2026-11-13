@@ -10,19 +10,15 @@ export function Hero() {
       className="relative flex min-h-[100dvh] items-center justify-center overflow-hidden px-6 pb-24 pt-20"
     >
       <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center text-center">
-        <span className="dz-badge dz-flicker">
-          <AlertTriangle aria-hidden="true" className="h-3.5 w-3.5" />
-          {heroCopy.badge}
-        </span>
 
         <GlitchText
           as="h1"
           id="hero-heading"
           text={heroCopy.headline}
-          className="mt-8 text-[clamp(2rem,7vw,4.5rem)] font-bold uppercase leading-[1.15] tracking-normal dz-fg-white"
+          className="mt-8 text-[clamp(2rem,7vw,6rem)] font-bold uppercase leading-[1.15] tracking-normal dz-fg-white"
         />
 
-        <p className="dz-mono mt-5 text-[0.5625rem] uppercase tracking-[0.08em] dz-fg-white sm:text-[0.625rem]">
+        <p className="dz-mono mt-5 text-[clamp(0.75rem,2.5vw,1rem)] uppercase tracking-[0.08em] dz-fg-white sm:text-[0.875rem]">
           {heroCopy.subtitle}
         </p>
 

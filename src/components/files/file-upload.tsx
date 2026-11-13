@@ -54,7 +54,7 @@ export function FileUpload({ onUpload }: FileUploadProps) {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         className={cn(
-          "relative w-full rounded-2xl border-2 border-dashed p-8 text-center transition-colors cursor-pointer",
+          "relative w-full rounded-sm border-2 border-dashed p-8 text-center transition-colors cursor-pointer",
           dragActive
             ? "border-primary bg-primary-muted"
             : "border-border hover:border-primary/50 hover:bg-surface-hover"

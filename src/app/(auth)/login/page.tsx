@@ -36,7 +36,7 @@ export default function LoginPage() {
         </AuthCard>
 
         <aside className="flex w-full flex-col items-center text-center lg:pt-4">
-          <p className="relative z-10 w-full rounded-2xl border-2 border-neon bg-surface px-4 py-3 font-pixel text-[10px] uppercase leading-relaxed tracking-wide text-secondary shadow-[3px_3px_0_0_rgba(168,85,247,0.35)] after:absolute after:-bottom-2 after:left-1/2 after:h-3 after:w-3 after:-translate-x-1/2 after:rotate-45 after:border-b-2 after:border-r-2 after:border-neon after:bg-surface">
+          <p className="relative z-10 w-full rounded-sm border-2 border-neon bg-surface px-4 py-3 font-pixel text-[10px] uppercase leading-relaxed tracking-wide text-secondary shadow-[3px_3px_0_0_rgba(168,85,247,0.35)] after:absolute after:-bottom-2 after:left-1/2 after:h-3 after:w-3 after:-translate-x-1/2 after:rotate-45 after:border-b-2 after:border-r-2 after:border-neon after:bg-surface">
             This Gengar is still finishing this project. Please be kind to him
           </p>
           <div className="relative flex h-56 w-full items-end justify-center">

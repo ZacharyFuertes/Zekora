@@ -68,7 +68,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="YOU@EXAMPLE.COM"
           required
-          className="w-full rounded-xl border-2 border-border bg-bg px-4 py-3 font-pixel text-xs text-text placeholder:text-text-muted/40 outline-none transition-all focus:border-neon focus:pixel-shadow-neon"
+          className="w-full rounded-sm border-2 border-border bg-bg px-4 py-3 font-pixel text-xs text-text placeholder:text-text-muted/40 outline-none transition-all focus:border-neon focus:pixel-shadow-neon"
         />
       </div>
       <div>
@@ -83,7 +83,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
           placeholder="••••••••"
           required
           minLength={6}
-          className="w-full rounded-xl border-2 border-border bg-bg px-4 py-3 font-pixel text-xs text-text placeholder:text-text-muted/40 outline-none transition-all focus:border-neon focus:pixel-shadow-neon"
+          className="w-full rounded-sm border-2 border-border bg-bg px-4 py-3 font-pixel text-xs text-text placeholder:text-text-muted/40 outline-none transition-all focus:border-neon focus:pixel-shadow-neon"
         />
       </div>
       {error && (
@@ -98,7 +98,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-neon bg-neon py-3 font-pixel text-xs font-bold uppercase tracking-wider text-bg pixel-shadow-dark transition-all hover:bg-neon-hover active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-sm border-2 border-neon bg-neon py-3 font-pixel text-xs font-bold uppercase tracking-wider text-bg pixel-shadow-dark transition-all hover:bg-neon-hover active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50"
       >
         {loading && <Loader2 className="w-4 h-4 animate-spin" />}
         {mode === "login" ? "SIGN IN" : "CREATE ACCOUNT"}

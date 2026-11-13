@@ -25,7 +25,6 @@ export async function generateMetadata(): Promise<Metadata> {
     : "http://localhost:3000"
 
   return {
-    title: "Zekora",
     description: "A calm, cozy personal storage system",
     metadataBase: new URL(baseUrl),
     icons: {

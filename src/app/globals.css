@@ -1,33 +1,23 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-bg: #0c0c12;
-  --color-surface: #16161f;
-  --color-surface-hover: #1e1e2c;
-  --color-border: #2a2a3a;
-  --color-primary: #2b0057;
-  --color-primary-hover: #2b0057;
-  --color-primary-muted: rgba(43, 0, 87, 0.12);
-
-  /* Violet emblem accent */
-  --color-neon: #2b0057;
-  --color-neon-hover: #2b0057;
-  --color-neon-muted: rgba(43, 0, 87, 0.14);
-
-  /* Deep violet secondary accent */
-  --color-crimson: #2b0057;
-  --color-crimson-hover: #2b0057;
-  --color-crimson-muted: rgba(43, 0, 87, 0.16);
-
-  /* Orange accent, kept alongside the violet palette */
-  --color-accent: #dd2c00;
-  --color-accent-muted: rgba(221, 44, 0, 0.16);
-  --color-secondary: var(--color-accent);
-  --color-secondary-muted: rgba(221, 44, 0, 0.16);
-  --color-text: #e4e4e7;
-  --color-text-muted: #7c7c8a;
-  --color-danger: #f87171;
-  --color-danger-muted: rgba(221, 44, 0, 0.16);
+  --color-bg: #0A0A12;
+  --color-sidebar: #0E0E1A;
+  --color-surface: #12121F;
+  --color-surface-raised: #1A1A2C;
+  --color-border: #2B2B45;
+  --color-grid-line: #171728;
+  --color-primary: #FF5A1F;
+  --color-primary-hover: #E64A12;
+  --color-on-primary: #0A0A12;
+  --color-accent: #A78BFA;
+  --color-accent-deep: #5B2EC9;
+  --color-text: #F4F4FA;
+  --color-text-muted: #9A9AB8;
+  --color-text-faint: #6B6B88;
+  --color-success: #2EE59D;
+  --color-warning: #FFB020;
+  --color-danger: #FF3B5C;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-pixel: var(--font-pixel);
@@ -61,12 +51,12 @@
 }
 
 body {
-  background-color: #090914;
+  background-color: var(--color-bg);
   background-image:
-    linear-gradient(rgba(221, 44, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(221, 44, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(135deg, rgba(20, 20, 38, 0.94), rgba(9, 9, 20, 0.98)),
-    radial-gradient(circle at 50% 30%, rgba(43, 0, 87, 0.2), transparent 58%);
+    linear-gradient(rgba(245, 245, 250, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 245, 250, 0.03) 1px, transparent 1px),
+    linear-gradient(135deg, var(--color-grid-line), var(--color-bg)),
+    radial-gradient(circle at 50% 30%, var(--color-accent-deep), transparent 58%);
   background-size: 20px 20px, 20px 20px, 100% 100%, 100% 100%;
   background-attachment: fixed;
   color: var(--color-text);
@@ -76,9 +66,9 @@ body {
 
 .pixel-vault-grid {
   background-image:
-    linear-gradient(rgba(221, 44, 0, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(221, 44, 0, 0.06) 1px, transparent 1px),
-    radial-gradient(circle at 50% 30%, rgba(43, 0, 87, 0.16), transparent 62%);
+    linear-gradient(rgba(250, 245, 250, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(250, 245, 250, 0.03) 1px, transparent 1px),
+    radial-gradient(circle at 50% 30%, var(--color-accent-deep), transparent 62%);
   background-size: 16px 16px, 16px 16px, 100% 100%;
   image-rendering: pixelated;
 }
@@ -98,10 +88,13 @@ body {
 
 /* ── Pixel shadow utilities ── */
 .pixel-shadow-neon {
-  box-shadow: 3px 3px 0 0 rgba(43, 0, 87, 0.45);
+  box-shadow: 3px 3px 0 0 rgba(255, 90, 31, 0.45);
+}
+.pixel-shadow-accent {
+  box-shadow: 3px 3px 0 0 rgba(167, 139, 250, 0.45);
 }
 .pixel-shadow-crimson {
-  box-shadow: 3px 3px 0 0 rgba(43, 0, 87, 0.45);
+  box-shadow: 3px 3px 0 0 rgba(251, 13, 61, 0.45);
 }
 .pixel-shadow-dark {
   box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.5);
@@ -109,45 +102,45 @@ body {
 
 /* RetroUI Card styling scoped to the file list only. */
 .retroui-file-card {
-  background-color: #16161f;
-  border: 5px solid #2a2a3a;
+  background-color: var(--color-surface);
+  border: 5px solid var(--color-border);
   border-style: solid;
-  box-shadow: 2px 2px 0 2px #2b0057, -2px -2px 0 2px #16161f;
-  color: #e4e4e7;
+  box-shadow: 2px 2px 0 2px var(--color-primary), -2px -2px 0 2px var(--color-bg);
+  color: var(--color-text);
   margin: 0;
 }
 
 .retroui-file-card-folder:hover {
-  background-color: #16161f;
-  border-color: #2a2a3a;
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
 }
 
 .retroui-file-card-folder {
-  background-color: #16161f;
-  border-color: #2a2a3a;
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
   border-width: 5px;
-  outline: 2px solid #0c0c12;
+  outline: 2px solid var(--color-bg);
   outline-offset: 2px;
   border-image-source: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M3 1h1v1h-1zM4 1h1v1h-1zM2 2h1v1h-1zM5 2h1v1h-1zM1 3h1v1h-1zM6 3h1v1h-1zM1 4h1v1h-1zM6 4h1v1h-1zM2 5h1v1h-1zM5 5h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1z' fill='%232a2a3a'/%3E%3C/svg%3E");
   border-image-slice: 3;
   border-image-outset: 2px;
   border-image-repeat: stretch;
-  box-shadow: 2px 2px 0 2px #2b0057, -2px -2px 0 2px #16161f;
-  color: #e4e4e7;
+  box-shadow: 2px 2px 0 2px var(--color-primary), -2px -2px 0 2px var(--color-bg);
+  color: var(--color-text);
 }
 
 .retroui-file-card .text-text {
-  color: #e4e4e7;
+  color: var(--color-text);
 }
 
 .retroui-file-card .text-text-muted,
 .retroui-file-card .text-text-muted\/70 {
-  color: #7c7c8a;
+  color: var(--color-text-muted);
 }
 
 .retroui-file-card-file:hover {
-  background-color: rgba(248, 113, 113, 0.1);
-  border-color: #f87171;
+  background-color: rgba(255, 147, 115, 0.1);
+  border-color: var(--color-danger);
 }
 
 @keyframes accent-glow-move {

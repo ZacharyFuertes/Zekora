@@ -86,7 +86,7 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
             onClick={handleConnect}
             disabled={connectState.status === "connecting"}
             className={cn(
-              "flex items-center gap-2 px-3 py-2 rounded-xl text-sm font-medium transition-colors",
+              "flex items-center gap-2 px-3 py-2 rounded-sm text-sm font-medium transition-colors",
               connectState.status === "connecting"
                 ? "bg-surface-hover text-text-muted cursor-wait"
                 : "bg-neon text-bg hover:bg-neon-hover"
@@ -112,9 +112,9 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="flex flex-col items-center justify-center py-16 text-center rounded-2xl border border-dashed border-border"
+              className="flex flex-col items-center justify-center py-16 text-center rounded-sm border border-dashed border-border"
             >
-              <div className="w-16 h-16 rounded-2xl bg-surface border border-border flex items-center justify-center mb-4">
+              <div className="w-16 h-16 rounded-sm bg-surface border border-border flex items-center justify-center mb-4">
                 <HardDrive className="w-7 h-7 text-text-muted" />
               </div>
               <h3 className="text-base font-medium text-text">No drives connected</h3>
@@ -135,10 +135,10 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, x: -16 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="rounded-2xl border border-border bg-surface p-4"
+                  className="rounded-sm border border-border bg-surface p-4 pixel-shadow-dark"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary-muted flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-sm bg-primary-muted flex items-center justify-center shrink-0">
                       <HardDrive className="w-5 h-5 text-primary" />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -158,7 +158,7 @@ export function ConnectedDrivesManager({ accounts: initialAccounts, pool: initia
                     <button
                       onClick={() => handleUnlink(account.id)}
                       disabled={removingId === account.id}
-                      className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-text-muted hover:text-danger hover:bg-danger-muted transition-colors"
+                      className="shrink-0 w-8 h-8 rounded-sm flex items-center justify-center text-text-muted hover:text-danger hover:bg-danger-muted transition-colors"
                       aria-label={`Unlink ${account.account_email}`}
                     >
                       {removingId === account.id ? (

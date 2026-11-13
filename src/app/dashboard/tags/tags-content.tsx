@@ -48,7 +48,7 @@ export function TagsContent({ tags: initial }: TagsContentProps) {
         </div>
         <button
           onClick={() => setShowNew(true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-bg text-sm font-medium hover:bg-primary-hover transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-sm bg-primary text-bg text-sm font-medium hover:bg-primary-hover transition-colors"
         >
           <Plus className="w-4 h-4" />
           New Tag
@@ -62,7 +62,7 @@ export function TagsContent({ tags: initial }: TagsContentProps) {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             onSubmit={handleCreate}
-            className="rounded-2xl border border-border bg-surface p-4 space-y-3 overflow-hidden"
+            className="rounded-sm border border-border bg-surface p-4 space-y-3 overflow-hidden pixel-shadow-dark"
           >
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-medium text-text">New Tag</h3>
@@ -76,12 +76,12 @@ export function TagsContent({ tags: initial }: TagsContentProps) {
               onChange={(e) => setName(e.target.value)}
               placeholder="Tag name"
               required
-              className="w-full rounded-xl border border-border bg-bg px-4 py-2.5 text-sm text-text outline-none focus:border-primary transition-colors"
+              className="w-full rounded-sm border border-border bg-bg px-4 py-2.5 text-sm text-text outline-none focus:border-primary transition-colors"
             />
             <button
               type="submit"
               disabled={creating || !name}
-              className="w-full rounded-xl bg-primary text-bg py-2.5 text-sm font-medium hover:bg-primary-hover disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+              className="w-full rounded-sm bg-primary text-bg py-2.5 text-sm font-medium hover:bg-primary-hover disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
             >
               {creating && <Loader2 className="w-4 h-4 animate-spin" />}
               Create Tag
@@ -92,7 +92,7 @@ export function TagsContent({ tags: initial }: TagsContentProps) {
 
       {tags.length === 0 && !showNew ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-surface border border-border flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-sm bg-surface border border-border flex items-center justify-center mb-4">
             <Tags className="w-7 h-7 text-text-muted" />
           </div>
           <h3 className="text-base font-medium text-text">No tags</h3>
@@ -106,7 +106,7 @@ export function TagsContent({ tags: initial }: TagsContentProps) {
               layout
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface border border-border hover:bg-surface-hover transition-colors"
+              className="group inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-surface border border-border hover:bg-surface-hover transition-colors"
             >
               <span className="text-sm text-text">{tag.name}</span>
               <button

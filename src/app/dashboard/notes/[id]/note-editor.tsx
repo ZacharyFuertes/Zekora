@@ -250,17 +250,17 @@ export function NoteEditor({ note, isNew, collections, tagSuggestions }: NoteEdi
       transition={{ duration: 0.3 }}
       className="mx-auto max-w-[820px] px-3 pb-10 pt-4"
     >
-      <div className="relative mx-auto max-w-[520px] overflow-hidden rounded-[32px] border border-[#2a2a3a] bg-[#111118]/95 shadow-[0_0_0_2px_rgba(17,17,24,0.9),0_18px_40px_rgba(0,0,0,0.45)]">
+      <div className="relative mx-auto max-w-[520px] overflow-hidden rounded-sm border border-[var(--color-border)] bg-[var(--color-surface)]/95 shadow-[0_0_0_2px_rgba(255,90,31,0.9),0_18px_40px_rgba(255,90,31,0.45)]">
         <div className="flex items-center justify-between px-5 pb-2 pt-4">
           <div className="flex items-center gap-3">
             <Link
               href="/dashboard/notes"
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#2a2a3a] bg-[#17171f] text-text-muted transition-colors hover:text-text"
+              className="flex h-9 w-9 items-center justify-center rounded-sm border border-[var(--color-border)] bg-[var(--color-surface)] text-text-muted transition-colors hover:text-[var(--color-text)]"
               aria-label="Back to notes"
             >
               <ArrowLeft className="h-4 w-4" />
             </Link>
-            <div className="flex items-center gap-2 rounded-xl border border-[#2a2a3a] bg-[#17171f] px-3 py-2 text-sm text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+            <div className="flex items-center gap-2 rounded-sm border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-sm text-text shadow-[inset_0_1px_0_rgba(255,90,31,0.04)]">
               <span className="max-w-[160px] truncate font-medium">{headerLabel}</span>
               <span className="text-[10px] text-text-muted">▾</span>
             </div>
@@ -271,7 +271,7 @@ export function NoteEditor({ note, isNew, collections, tagSuggestions }: NoteEdi
               type="button"
               onClick={handleSave}
               disabled={saving || !title}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#2a2a3a] bg-[#17171f] text-text-muted transition-colors hover:border-[#dd2c00]/70 hover:text-accent disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex h-9 w-9 items-center justify-center rounded-sm border border-[var(--color-border)] bg-[var(--color-surface)] text-text-muted transition-colors hover:border-[var(--color-danger)]/70 hover:text-[var(--color-primary)] disabled:cursor-not-allowed disabled:opacity-40"
               aria-label="Save note"
             >
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
@@ -303,18 +303,18 @@ export function NoteEditor({ note, isNew, collections, tagSuggestions }: NoteEdi
             />
           </div>
 
-          <div className="mt-6 space-y-4 border-t border-[#2a2a3a] pt-4">
+          <div className="mt-6 space-y-4 border-t border-[var(--color-border)] pt-4">
             <div className="flex flex-wrap gap-2">
               <TagInput tags={tags} onChange={setTags} suggestions={tagSuggestions} />
             </div>
             <div className="grid gap-3 md:grid-cols-2">
-              <div className="rounded-2xl border border-[#2a2a3a] bg-[#17171f] p-2.5">
+              <div className="rounded-sm border border-[var(--color-border)] bg-[var(--color-surface)] p-2.5">
                 <label className="mb-2 block text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
                   Collection
                 </label>
                 <CollectionPicker collections={collections} value={collectionId} onChange={setCollectionId} />
               </div>
-              <div className="rounded-2xl border border-[#2a2a3a] bg-[#17171f] p-2.5">
+              <div className="rounded-sm border border-[var(--color-border)] bg-[var(--color-surface)] p-2.5">
                 <label className="mb-2 block text-[10px] font-medium uppercase tracking-[0.12em] text-text-muted">
                   Mood
                 </label>
@@ -324,10 +324,10 @@ export function NoteEditor({ note, isNew, collections, tagSuggestions }: NoteEdi
           </div>
         </div>
 
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#111118] via-[#111118]/85 to-transparent" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[var(--color-surface)] via-[var(--color-surface)]/85 to-transparent" />
 
         <div className="absolute inset-x-0 bottom-4 flex justify-center px-4">
-          <div className="flex items-center justify-center gap-2 rounded-full border border-[#2a2a3a] bg-[#0d0d12] px-3 py-2.5 shadow-[0_4px_0_rgba(0,0,0,0.5)]">
+          <div className="flex items-center justify-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2.5 shadow-[0_4px_0_rgba(255,90,31,0.5)]">
             {toolbarButtons.map(({ icon: Icon, label }) => (
               <button
                 key={label}
@@ -337,7 +337,7 @@ export function NoteEditor({ note, isNew, collections, tagSuggestions }: NoteEdi
                   const action = label.toLowerCase().replace(/\s+/g, "")
                   handleToolbarAction(action as "write" | "ai" | "text" | "bold" | "italic" | "underline" | "list")
                 }}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent bg-[#17171f] text-text-muted transition-colors hover:border-[#dd2c00]/60 hover:text-accent focus:outline-none"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-text-muted transition-colors hover:border-[var(--color-danger)]/60 hover:text-[var(--color-primary)] focus:outline-none"
               >
                 <Icon className="h-4 w-4" />
               </button>
@@ -348,7 +348,7 @@ export function NoteEditor({ note, isNew, collections, tagSuggestions }: NoteEdi
         <button
           type="button"
           aria-label="Voice note"
-          className="absolute bottom-1 left-1/2 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-full border-[3px] border-[#0d0d12] bg-[#f3f3f5] text-[#111118] shadow-[0_6px_0_rgba(0,0,0,0.4)] transition-transform hover:scale-[1.02]"
+          className="absolute bottom-1 left-1/2 flex h-14 w-14 -translate-x-1/2 items-center justify-center rounded-full border-3 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text)] shadow-[0_6px_0_rgba(255,90,31,0.4)] transition-transform hover:scale-[1.02]"
         >
           <Mic className="h-6 w-6" />
         </button>

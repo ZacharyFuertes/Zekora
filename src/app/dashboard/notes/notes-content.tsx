@@ -40,7 +40,7 @@ export function NotesContent({ notes: initialNotes }: NotesContentProps) {
         </div>
         <Link
           href="/dashboard/notes/new"
-          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-bg text-sm font-medium hover:bg-primary-hover transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-sm bg-primary text-bg text-sm font-medium hover:bg-primary-hover transition-colors"
         >
           <Plus className="w-4 h-4" />
           New Note
@@ -49,7 +49,7 @@ export function NotesContent({ notes: initialNotes }: NotesContentProps) {
 
       {notes.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-surface border border-border flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-sm bg-surface border border-border flex items-center justify-center mb-4">
             <StickyNote className="w-7 h-7 text-text-muted" />
           </div>
           <h3 className="text-base font-medium text-text">No notes yet</h3>
@@ -63,7 +63,7 @@ export function NotesContent({ notes: initialNotes }: NotesContentProps) {
               layout
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              className="group rounded-2xl border border-border bg-surface p-4 hover:bg-surface-hover transition-colors"
+              className="group rounded-sm border border-border bg-surface p-4 hover:bg-surface-hover transition-colors"
             >
               <div className="flex items-start justify-between gap-2">
                 <Link href={`/dashboard/notes/${note.id}`} className="flex-1 min-w-0">
@@ -71,12 +71,12 @@ export function NotesContent({ notes: initialNotes }: NotesContentProps) {
                   <p className="text-xs text-text-muted mt-1.5 line-clamp-2">{note.content}</p>
                   <div className="flex items-center gap-2 mt-2">
                     {note.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="px-2 py-0.5 rounded-lg bg-primary-muted text-primary text-[10px]">
+                      <span key={tag} className="px-2 py-0.5 rounded-sm bg-primary-muted text-primary text-[10px]">
                         {tag}
                       </span>
                     ))}
                     {note.mood && (
-                      <span className="px-2 py-0.5 rounded-lg bg-secondary-muted text-secondary text-[10px]">
+                      <span className="px-2 py-0.5 rounded-sm bg-secondary-muted text-secondary text-[10px]">
                         {note.mood}
                       </span>
                     )}
@@ -85,7 +85,7 @@ export function NotesContent({ notes: initialNotes }: NotesContentProps) {
                 </Link>
                 <button
                   onClick={() => handleDelete(note.id)}
-                  className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-text-muted opacity-0 group-hover:opacity-100 hover:text-danger hover:bg-danger-muted transition-all"
+                  className="shrink-0 w-8 h-8 rounded-sm flex items-center justify-center text-text-muted opacity-0 group-hover:opacity-100 hover:text-danger hover:bg-danger-muted transition-all"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

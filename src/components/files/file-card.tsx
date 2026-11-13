@@ -38,10 +38,10 @@ export function FileCard({ file, onDelete }: FileCardProps) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="group relative rounded-2xl border border-border bg-surface p-4 hover:bg-surface-hover transition-colors"
+      className="group relative rounded-sm border border-border bg-surface p-4 hover:bg-surface-hover transition-colors pixel-shadow-dark"
     >
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl bg-primary-muted flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded-sm bg-primary-muted flex items-center justify-center shrink-0">
           <Icon className="w-5 h-5 text-primary" />
         </div>
         <div className="min-w-0 flex-1">
@@ -55,7 +55,7 @@ export function FileCard({ file, onDelete }: FileCardProps) {
         {onDelete && (
           <button
             onClick={() => onDelete(file.id)}
-            className="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-text-muted opacity-0 group-hover:opacity-100 hover:text-danger hover:bg-danger-muted transition-all"
+            className="shrink-0 w-8 h-8 rounded-sm flex items-center justify-center text-text-muted opacity-0 group-hover:opacity-100 hover:text-danger hover:bg-danger-muted transition-all"
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -63,7 +63,7 @@ export function FileCard({ file, onDelete }: FileCardProps) {
       </div>
       {file.mimeType.startsWith("image/") && (
         <div
-          className="mt-3 rounded-xl overflow-hidden bg-bg aspect-video bg-cover bg-center"
+          className="mt-3 rounded-sm overflow-hidden bg-bg aspect-video bg-cover bg-center"
           style={{ backgroundImage: `url(${file.url})` }}
         />
       )}
