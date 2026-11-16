@@ -5,6 +5,8 @@ import { createClient } from "@/lib/supabase/client"
 import { AuthCard } from "@/components/auth/auth-card"
 import { AuthForm } from "@/components/auth/auth-form"
 import { BetaSignupForm } from "@/components/auth/beta-signup-form"
+import { ButtonLink } from "@/components/ui/button"
+import { ArrowLeft } from "lucide-react"
 
 export default function LoginPage() {
   const supabase = createClient()
@@ -53,6 +55,11 @@ export default function LoginPage() {
                 className={`relative h-52 w-52 object-contain animate-gengar-arrive ${gengarClicked ? "animate-gengar-click" : ""}`}
               />
             </button>
+          </div>
+          <div className="mt-6 flex flex-col items-center text-center">
+            <ButtonLink href="/" className="flex items-center gap-2 text-sm text-text-muted hover:text-text transition-colors focus-visible:ring-[var(--color-accent)]">
+              <ArrowLeft className="w-4 h-4" /> Back to Zekora
+            </ButtonLink>
           </div>
           <BetaSignupForm />
         </aside>

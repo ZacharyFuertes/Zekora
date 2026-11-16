@@ -59,7 +59,7 @@ export function BetaSignupForm() {
         <button
           type="submit"
           disabled={status === "loading"}
-          className="flex items-center justify-center gap-2 rounded-sm border-2 border-neon bg-neon px-3 py-2 font-pixel text-[10px] font-bold uppercase text-bg pixel-shadow-dark hover:bg-neon-hover disabled:opacity-50"
+          className="flex items-center justify-center gap-2 rounded-sm border-2 border-border bg-primary text-on-primary px-3 py-2 font-pixel text-[10px] font-bold uppercase text-bg pixel-shadow-dark transition-all hover:bg-primary-hover disabled:opacity-60"
         >
           {status === "loading" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Mail className="h-3 w-3" />}
           Join beta

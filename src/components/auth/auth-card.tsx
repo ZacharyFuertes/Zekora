@@ -60,7 +60,7 @@ export function AuthCard({
             {footerText}{" "}
             <Link
               href={footerLink}
-              className="text-neon hover:underline font-bold"
+              className="text-primary hover:underline font-bold"
             >
               {footerLinkText}
             </Link>

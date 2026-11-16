@@ -234,3 +234,46 @@ body {
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
+
+/* Pixel game background animation */
+@keyframes pixel-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-1px, -1px);
+  }
+}
+
+@keyframes pixel-twinkle {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes planet-twinkle {
+  0%, 100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes pixel-float {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(1px, 1px);
+  }
+  66% {
+    transform: translate(-1px, -1px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

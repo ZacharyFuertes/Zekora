@@ -98,7 +98,7 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
       <button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center gap-2 rounded-sm border-2 border-neon bg-neon py-3 font-pixel text-xs font-bold uppercase tracking-wider text-bg pixel-shadow-dark transition-all hover:bg-neon-hover active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50"
+        className="flex w-full items-center justify-center rounded-sm border-2 border-border bg-primary text-on-primary py-3 font-pixel text-xs font-bold uppercase tracking-wider text-bg pixel-shadow-dark transition-all hover:bg-primary-hover active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-60"
       >
         {loading && <Loader2 className="w-4 h-4 animate-spin" />}
         {mode === "login" ? "SIGN IN" : "CREATE ACCOUNT"}

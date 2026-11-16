@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google"
 import "./globals.css"
 import "@/styles/landing.css"
+import { PixelBackground } from "@/components/ui/pixel-background"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,17 +39,14 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable}`}
     >
       <body className="min-h-dvh">
+        <PixelBackground reduceMotion={false} />
         {children}
         <div className="grain-overlay" />
         <div className="scanline-overlay" />
