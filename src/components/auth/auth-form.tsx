@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/8bit/button"
 
 interface AuthFormProps {
   mode: "login" | "signup"
@@ -95,14 +96,16 @@ export function AuthForm({ mode, onSubmit }: AuthFormProps) {
           {error.toUpperCase()}
         </motion.p>
       )}
-      <button
+      <Button
         type="submit"
         disabled={loading}
-        className="flex w-full items-center justify-center rounded-sm border-2 border-border bg-primary text-on-primary py-3 font-pixel text-xs font-bold uppercase tracking-wider text-bg pixel-shadow-dark transition-all hover:bg-primary-hover active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-60"
+        variant="default"
+        size="lg"
+        className="w-full py-3 font-pixel text-xs font-bold uppercase tracking-wider"
       >
         {loading && <Loader2 className="w-4 h-4 animate-spin" />}
         {mode === "login" ? "SIGN IN" : "CREATE ACCOUNT"}
-      </button>
+      </Button>
     </form>
   )
 }

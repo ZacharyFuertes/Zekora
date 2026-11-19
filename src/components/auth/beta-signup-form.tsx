@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Loader2, Mail } from "lucide-react"
+import { Button } from "@/components/ui/8bit/button"
 
 export function BetaSignupForm() {
   const [email, setEmail] = useState("")
@@ -56,14 +57,16 @@ export function BetaSignupForm() {
           required
           className="min-w-0 flex-1 rounded-sm border-2 border-border bg-bg px-3 py-2 font-pixel text-[10px] text-text placeholder:text-text-muted/40 outline-none focus:border-neon"
         />
-        <button
+        <Button
           type="submit"
           disabled={status === "loading"}
-          className="flex items-center justify-center gap-2 rounded-sm border-2 border-border bg-primary text-on-primary px-3 py-2 font-pixel text-[10px] font-bold uppercase text-bg pixel-shadow-dark transition-all hover:bg-primary-hover disabled:opacity-60"
+          variant="default"
+          size="sm"
+          className="gap-2 font-pixel text-[10px] font-bold uppercase"
         >
           {status === "loading" ? <Loader2 className="h-3 w-3 animate-spin" /> : <Mail className="h-3 w-3" />}
           Join beta
-        </button>
+        </Button>
       </form>
       {status === "error" && (
         <p className="mt-2 font-pixel text-[9px] uppercase text-danger">{message}</p>

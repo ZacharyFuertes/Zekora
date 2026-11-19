@@ -10,8 +10,10 @@
     "db:demo-user": "node scripts/create-demo-user.mjs"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.5.0",
     "@supabase/ssr": "^0.12.3",
     "@supabase/supabase-js": "^2.110.8",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "fflate": "^0.8.3",
     "framer-motion": "^12.42.2",

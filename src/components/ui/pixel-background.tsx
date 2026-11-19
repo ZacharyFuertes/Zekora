@@ -13,6 +13,21 @@ const LARGE_STAR = "██"
 const MEDIUM_STAR = "▓▓"
 const SMALL_STAR = "■■"
 
+function seededStars(count: number, seed: number, opacityBase: number, opacityRange: number, sizes: string[]) {
+  let state = seed >>> 0
+  const next = () => {
+    state = (state * 1664525 + 1013904223) >>> 0
+    return state / 0x100000000
+  }
+
+  return Array.from({ length: count }, () => ({
+    x: next() * STAGE_WIDTH,
+    y: next() * STAGE_HEIGHT,
+    opacity: opacityBase + next() * opacityRange,
+    size: sizes[Math.floor(next() * sizes.length)],
+  }))
+}
+
 interface PixelBackgroundProps {
   reduceMotion?: boolean
 }
@@ -34,32 +49,10 @@ export function PixelBackground({ reduceMotion = false }: PixelBackgroundProps) 
     return () => clearInterval(id)
   }, [isReduced])
 
-  // Generate large star field
-  const largeStars = Array.from({ length: 12 }).map(() => {
-    const x = Math.random() * STAGE_WIDTH
-    const y = Math.random() * STAGE_HEIGHT
-    const opacity = Math.random()
-    const size = Math.random() > 0.5 ? LARGE_STAR : MEDIUM_STAR
-    return { x, y, opacity, size }
-  })
-
-  // Generate medium star field
-  const mediumStars = Array.from({ length: 20 }).map(() => {
-    const x = Math.random() * STAGE_WIDTH
-    const y = Math.random() * STAGE_HEIGHT
-    const opacity = Math.random() * 0.6 + 0.2
-    const size = MEDIUM_STAR
-    return { x, y, opacity, size }
-  })
-
-  // Generate small star field
-  const smallStars = Array.from({ length: 30 }).map(() => {
-    const x = Math.random() * STAGE_WIDTH
-    const y = Math.random() * STAGE_HEIGHT
-    const opacity = Math.random() * 0.4 + 0.1
-    const size = SMALL_STAR
-    return { x, y, opacity, size }
-  })
+  // Seeded fields produce identical coordinates during server and client rendering.
+  const largeStars = seededStars(12, 0x8b17c, 0, 1, [LARGE_STAR, MEDIUM_STAR])
+  const mediumStars = seededStars(20, 0x41d2a, 0.2, 0.6, [MEDIUM_STAR])
+  const smallStars = seededStars(30, 0x19f3b, 0.1, 0.4, [SMALL_STAR])
 
   // Planet/moon (low contrast, placed at bottom-right)
   const planet = {
@@ -67,11 +60,6 @@ export function PixelBackground({ reduceMotion = false }: PixelBackgroundProps) 
     y: STAGE_HEIGHT - 12,
     size: 8,
     color: "rgba(167, 139, 250, 0.15)",
-  }
-
-  // Animated step function
-  const step = (value: number, max: number) => {
-    return Math.floor((value % max) / (max / 8)) * (max / 8)
   }
 
   return (

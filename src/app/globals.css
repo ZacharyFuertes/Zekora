@@ -277,3 +277,21 @@ body {
     transform: translate(0, 0);
   }
 }
+
+/* 8bitcn aliases -> Zekora tokens */
+@theme inline {
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
+  --color-primary-foreground: var(--color-on-primary);
+  --color-secondary: var(--color-accent);
+  --color-secondary-foreground: var(--color-on-primary);
+  --color-accent-foreground: var(--color-on-primary);
+  --color-destructive: var(--color-danger);
+  --color-destructive-foreground: var(--color-text);
+  --color-input: var(--color-border);
+  --color-ring: var(--color-accent);
+}
+
+.retro {
+  font-family: var(--font-pixel), monospace;
+}
